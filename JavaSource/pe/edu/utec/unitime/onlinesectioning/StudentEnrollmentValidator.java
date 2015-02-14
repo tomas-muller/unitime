@@ -44,7 +44,7 @@ public class StudentEnrollmentValidator implements StudentEnrollmentProvider {
 		if (!check.hasFlag(EligibilityFlag.CAN_ENROLL)) return;
 		// Ensure that the eligibility is re-check after Submit Schedule
 		check.setFlag(EligibilityFlag.RECHECK_AFTER_ENROLLMENT, true);
-
+		
 		try {
 			// REQ.04 student is not eligible if he/she already has a schedule
 			// That is he/she is enrolled in at least one class
@@ -93,6 +93,13 @@ public class StudentEnrollmentValidator implements StudentEnrollmentProvider {
 			} else {
 				check.setFlag(EligibilityFlag.CAN_ENROLL, false);
 				throw new SectioningException(MESSAGES.failedEligibilityBadResponse());
+			}
+			
+			// REQ.10 accept regulations checkbox
+			if (check.hasFlag(EligibilityFlag.CAN_ENROLL) && !check.hasFlag(EligibilityFlag.IS_ADMIN) && !check.hasFlag(EligibilityFlag.IS_ADVISOR)) {
+				String regulations = ApplicationProperties.getProperty("utec.enrollment.regulations");
+				if (regulations != null)
+					check.setCheckboxMessage(regulations);
 			}
 		} catch (SectioningException e) {
 			helper.info("Eligibility check failed: " + e.getMessage());
