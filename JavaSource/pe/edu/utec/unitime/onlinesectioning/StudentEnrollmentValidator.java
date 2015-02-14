@@ -2,6 +2,7 @@ package pe.edu.utec.unitime.onlinesectioning;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -18,7 +19,18 @@ import org.unitime.timetable.onlinesectioning.OnlineSectioningServer;
 import org.unitime.timetable.onlinesectioning.custom.StudentEnrollmentProvider;
 import org.unitime.timetable.onlinesectioning.model.XStudent;
 
-public class StudentEnrollmentValidator implements StudentEnrollmentProvider {	
+public class StudentEnrollmentValidator implements StudentEnrollmentProvider {
+	
+	protected Connection obtainConnection() throws SQLException {
+		SessionImplementor session = (SessionImplementor)new _RootDAO().getSession();
+        return session.getJdbcConnectionAccess().obtainConnection();
+	}
+	
+	protected void releaseConnection(Connection connection) throws SQLException {
+		SessionImplementor session = (SessionImplementor)new _RootDAO().getSession();
+		session.getJdbcConnectionAccess().releaseConnection(connection);
+	}
+	
 	@Override
 	public void checkEligibility(OnlineSectioningServer server, OnlineSectioningHelper helper, EligibilityCheck check, XStudent student) throws SectioningException {
 	}
@@ -39,8 +51,7 @@ public class StudentEnrollmentValidator implements StudentEnrollmentProvider {
 			String procedure = ApplicationProperties.getProperty("utec.validation.enrollment", "call sp_validar_reglas_matricula(?, ?, ?, ?)");
 			String ret = null;
 			
-			SessionImplementor session = (SessionImplementor)new _RootDAO().getSession();
-	        Connection connection = session.getJdbcConnectionAccess().obtainConnection();
+	        Connection connection = obtainConnection();
 			try {
 				CallableStatement statement = connection.prepareCall(procedure);
 				try {
@@ -54,7 +65,7 @@ public class StudentEnrollmentValidator implements StudentEnrollmentProvider {
 					statement.close();
 				}
 			} finally {
-				session.getJdbcConnectionAccess().releaseConnection(connection);
+				releaseConnection(connection);
 			}
 			
 			helper.getAction().addOptionBuilder().setKey("response").setValue(ret);
