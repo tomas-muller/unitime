@@ -12,6 +12,7 @@ import java.util.Set;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.unitime.timetable.ApplicationProperties;
 import org.unitime.timetable.gwt.shared.OnlineSectioningInterface.EligibilityCheck;
+import org.unitime.timetable.gwt.shared.OnlineSectioningInterface.EligibilityCheck.EligibilityFlag;
 import org.unitime.timetable.gwt.shared.SectioningException;
 import org.unitime.timetable.model.dao._RootDAO;
 import org.unitime.timetable.onlinesectioning.OnlineSectioningHelper;
@@ -33,6 +34,50 @@ public class StudentEnrollmentValidator implements StudentEnrollmentProvider {
 	
 	@Override
 	public void checkEligibility(OnlineSectioningServer server, OnlineSectioningHelper helper, EligibilityCheck check, XStudent student) throws SectioningException {
+		// Cannot enroll -> no additional check is needed
+		if (!check.hasFlag(EligibilityFlag.CAN_ENROLL)) return;
+
+		try {
+			// REQ.03 call stored procedure, disable enrollment when no success
+			String p1 = server.getAcademicSession().getTerm();
+			String p2 = student.getExternalId();
+			String procedure = ApplicationProperties.getProperty("utec.validation.eligibility", "call sp_validar_acceso(?, ?, ?)");
+			String ret = null;
+			
+	        Connection connection = obtainConnection();
+			try {
+				CallableStatement statement = connection.prepareCall(procedure);
+				try {
+					statement.setString(1, p1);
+					statement.setString(2, p2);
+					statement.registerOutParameter(3, java.sql.Types.VARCHAR);
+					statement.execute();
+					ret = statement.getString(3);
+				} finally {
+					statement.close();
+				}
+			} finally {
+				releaseConnection(connection);
+			}
+			
+			helper.getAction().addOptionBuilder().setKey("response").setValue(ret);
+			if ("1".equals(ret) || ret.startsWith("1||")) {
+				// Eligibility check succeeded: no action is needed
+			} else if (ret.startsWith("0||")) {
+				// Eligibility check failed: disable enrollment, return the given message
+				check.setMessage(ret.substring(3));
+				check.setFlag(EligibilityFlag.CAN_ENROLL, false);
+			} else {
+				check.setFlag(EligibilityFlag.CAN_ENROLL, false);
+				throw new SectioningException("Unrecognized response received.");
+			}
+		} catch (SectioningException e) {
+			helper.info("Eligibility check failed: " + e.getMessage());
+			throw e;
+		} catch (Exception e) {
+			helper.warn("Eligibility check failed: " + e.getMessage(), e);
+			throw new SectioningException(e.getMessage());
+		}
 	}
 
 	@Override
