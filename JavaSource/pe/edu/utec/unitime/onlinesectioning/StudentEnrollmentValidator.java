@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.engine.spi.SessionImplementor;
+import org.unitime.localization.impl.Localization;
 import org.unitime.timetable.ApplicationProperties;
 import org.unitime.timetable.gwt.shared.OnlineSectioningInterface.EligibilityCheck;
 import org.unitime.timetable.gwt.shared.OnlineSectioningInterface.EligibilityCheck.EligibilityFlag;
@@ -18,9 +19,14 @@ import org.unitime.timetable.model.dao._RootDAO;
 import org.unitime.timetable.onlinesectioning.OnlineSectioningHelper;
 import org.unitime.timetable.onlinesectioning.OnlineSectioningServer;
 import org.unitime.timetable.onlinesectioning.custom.StudentEnrollmentProvider;
+import org.unitime.timetable.onlinesectioning.model.XCourseRequest;
+import org.unitime.timetable.onlinesectioning.model.XRequest;
 import org.unitime.timetable.onlinesectioning.model.XStudent;
 
+import pe.edu.utec.unitime.resources.UTECStudentSectioningMessages;
+
 public class StudentEnrollmentValidator implements StudentEnrollmentProvider {
+	protected static UTECStudentSectioningMessages MESSAGES = Localization.create(UTECStudentSectioningMessages.class);
 	
 	protected Connection obtainConnection() throws SQLException {
 		SessionImplementor session = (SessionImplementor)new _RootDAO().getSession();
@@ -36,8 +42,25 @@ public class StudentEnrollmentValidator implements StudentEnrollmentProvider {
 	public void checkEligibility(OnlineSectioningServer server, OnlineSectioningHelper helper, EligibilityCheck check, XStudent student) throws SectioningException {
 		// Cannot enroll -> no additional check is needed
 		if (!check.hasFlag(EligibilityFlag.CAN_ENROLL)) return;
+		// Ensure that the eligibility is re-check after Submit Schedule
+		check.setFlag(EligibilityFlag.RECHECK_AFTER_ENROLLMENT, true);
 
 		try {
+			// REQ.04 student is not eligible if he/she already has a schedule
+			// That is he/she is enrolled in at least one class
+			if (!check.hasFlag(EligibilityFlag.IS_ADMIN) && !check.hasFlag(EligibilityFlag.IS_ADVISOR)) {
+				for (XRequest request: student.getRequests()) {
+					if (request instanceof XCourseRequest) {
+						XCourseRequest cr = (XCourseRequest)request;
+						if (cr.getEnrollment() != null) {
+							check.setMessage(MESSAGES.failedEligibilityAlreadyRegistered());
+							check.setFlag(EligibilityFlag.CAN_ENROLL, false);
+							return;
+						}
+					}
+				}
+			}
+			
 			// REQ.03 call stored procedure, disable enrollment when no success
 			String p1 = server.getAcademicSession().getTerm();
 			String p2 = student.getExternalId();
@@ -69,7 +92,7 @@ public class StudentEnrollmentValidator implements StudentEnrollmentProvider {
 				check.setFlag(EligibilityFlag.CAN_ENROLL, false);
 			} else {
 				check.setFlag(EligibilityFlag.CAN_ENROLL, false);
-				throw new SectioningException("Unrecognized response received.");
+				throw new SectioningException(MESSAGES.failedEligibilityBadResponse());
 			}
 		} catch (SectioningException e) {
 			helper.info("Eligibility check failed: " + e.getMessage());
@@ -121,7 +144,7 @@ public class StudentEnrollmentValidator implements StudentEnrollmentProvider {
 				// Validation failed, throw the given error
 				throw new SectioningException(ret.substring(3));
 			} else {
-				throw new SectioningException("Unrecognized response received.");
+				throw new SectioningException(MESSAGES.failedEnrollmentBadResponse());
 			}
 		} catch (SectioningException e) {
 			helper.info("Enrollment validation failed: " + e.getMessage());
