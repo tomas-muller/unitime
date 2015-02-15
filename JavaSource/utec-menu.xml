@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE unitime-menu PUBLIC "-//UniTime//UniTime Menu DTD/EN" "http://www.unitime.org/interface/menu.dtd">
+ <unitime-menu>
+	<!-- Add the Help Center item under the Help menu -->
+	<menu name="Help">
+		<separator/>
+		<!-- open the help center link in a dialog, can only be used if the page allows to be open in an dialog (X-Frame-Options header) -->
+		<!-- set target="download" if the page does not allow to be opened in a dialog -->
+		<item name="Help Center" page="utec.helpCenter.url" type="property" target="dialog"/>
+	</menu>
+</unitime-menu>
