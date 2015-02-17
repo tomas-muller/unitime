@@ -11,4 +11,7 @@ public interface UTECStudentSectioningMessages extends StudentSectioningMessages
 
 	@DefaultMessage("Unrecognized response received.")
 	String failedEnrollmentBadResponse();
+	
+	@DefaultMessage("Bad domain. Please authenticated with your {0} email address.")
+	String authenticationBadDomain(String domain);
 }
