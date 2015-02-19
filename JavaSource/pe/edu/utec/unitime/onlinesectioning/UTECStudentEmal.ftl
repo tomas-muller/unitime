@@ -23,7 +23,7 @@
  					</tr>
  					<#list classes as line>
  						<#if line.freeTime>
- 						<#else><#if line.assigned>
+ 						<#else><#if line.assigned && line.first>
  							<tr>
  								<td>${line.courseNumber}</td>
  								<td>${line.courseTitle}</td>
