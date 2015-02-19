@@ -21,17 +21,15 @@
  						<th>Secci&oacute;n matriculada</th>
  						<th>N&uacute;mero de cr&eacute;ditos</th>
  					</tr>
- 					<#list classes as line>
- 						<#if line.freeTime>
- 						<#else><#if line.assigned && line.first>
- 							<tr>
- 								<td>${line.courseNumber}</td>
- 								<td>${line.courseTitle}</td>
- 								<td>${line.name}</td>
- 								<td><#if line.credit??>${line.credit}</#if></td>
- 							</tr>
- 						</#if></#if>
- 					</#list>
+ 					<#list classes as line><#if !line.freeTime && line.assigned><#if line.first>
+ 						<tr><#assign cr = ''>
+ 							<td>${line.courseNumber}</td>
+ 							<td>${line.courseTitle}</td>
+ 							<td>${line.type} ${line.name}<#elseif line.type != previous.type>, ${line.type} ${line.name}</#if><#if line.credit??><#assign cr = line.credit></#if><#if line.last>
+ 							</td>
+ 							<td><#if line.credit??>${line.credit}<#else>${cr}</#if></td>
+ 						</tr>
+ 					</#if></#if><#assign previous=line></#list>
  					<tr>
  						<th colspan="3" style="text-align: right;">Total de cr&eacute;ditos matriculados:</th>
  						<td>${credit}</td>
