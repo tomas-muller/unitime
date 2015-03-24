@@ -46,9 +46,10 @@ public class StudentEnrollmentValidator implements StudentEnrollmentProvider {
 		check.setFlag(EligibilityFlag.RECHECK_AFTER_ENROLLMENT, true);
 		
 		try {
+			boolean failWhenRegistered = "true".equalsIgnoreCase(ApplicationProperties.getProperty("utec.validation.failWhenRegistered", "true"));
 			// REQ.04 student is not eligible if he/she already has a schedule
 			// That is he/she is enrolled in at least one class
-			if (!check.hasFlag(EligibilityFlag.IS_ADMIN) && !check.hasFlag(EligibilityFlag.IS_ADVISOR)) {
+			if (failWhenRegistered && !check.hasFlag(EligibilityFlag.IS_ADMIN) && !check.hasFlag(EligibilityFlag.IS_ADVISOR)) {
 				for (XRequest request: student.getRequests()) {
 					if (request instanceof XCourseRequest) {
 						XCourseRequest cr = (XCourseRequest)request;
