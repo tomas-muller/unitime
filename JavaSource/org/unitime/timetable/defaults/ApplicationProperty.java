@@ -743,6 +743,16 @@ public enum ApplicationProperty {
 	@Implements(ExternalUidTranslation.class)
 	@Description("ExternalUidTranslation interface for translating user external ids from different sources")
 	ExternalUserIdTranslation("tmtbl.externalUid.translation"),
+	
+	@Description("Custom SQL User Id Translation: SQL to translate the user name (as returned by the authentication) to the external user id that is used by UniTime.\n"+
+			"This parameter is used by the CustomSQLExternalUidTranslation. You also need to set tmtbl.externalUid.translation to org.unitime.timetable.spring.security.CustomSQLExternalUidTranslation")
+	@DefaultValue("select external_uid from %SCHEMA%.users where username = ?")
+	CustomSQLUidToExternalTranslation("unitime.custom.sql.uid2ext"),
+	
+	@Description("Custom SQL User Id Translation: SQL to translate the external user id that is used by UniTime to the user name (as returned by the authentication).\n"+
+			"This parameter is used by the CustomSQLExternalUidTranslation. You also need to set tmtbl.externalUid.translation to org.unitime.timetable.spring.security.CustomSQLExternalUidTranslation")
+	@DefaultValue("select username from %SCHEMA%.users where external_uid = ?")
+	CustomSQLExternalToUidTranslation("unitime.custom.sql.ext2uid"),
 
 	@Type(Class.class)
 	@Implements(DatabaseUpdate.class)
@@ -1081,6 +1091,16 @@ public enum ApplicationProperty {
 	@DefaultValue("true")
 	@Description("Room Timetable: allow to see all the rooms (when set to false)")
 	EventRoomTimetableAllRooms("unitime.event_timetable.event_rooms_only"),
+	
+	@Type(Boolean.class)
+	@DefaultValue("false")
+	@Description("Event Time Grid: display event title instead of event name in the header")
+	EventGridDisplayTitle("unitime.events.grid_display_title"),
+	
+	@Type(Boolean.class)
+	@DefaultValue("false")
+	@Description("Event ICS Calendar: include instructor names in the event description")
+	EventCalendarDisplayInstructorsInDescription("unitime.events.ics_instructors_in_description"),
 
 	@Type(Class.class)
 	@Implements(Email.class)
@@ -1817,6 +1837,11 @@ public enum ApplicationProperty {
 	
 	@Description("CAS Authentication: user external id attribute, if not set uid translation will take place instead")
 	AuthenticationCasIdAttribute("unitime.authentication.cas.id-attribute"),
+	
+	@Type(Boolean.class)
+	@DefaultValue("false")
+	@Description("CAS Authentication: always translate the id-attribute using the provided external user id translation class (see tmtbl.externalUid.translation property)")
+	AuthenticationCasIdAlwaysTranslate("unitime.authentication.cas.id-translate"),
 	
 	@Type(Boolean.class)
 	@DefaultValue("false")

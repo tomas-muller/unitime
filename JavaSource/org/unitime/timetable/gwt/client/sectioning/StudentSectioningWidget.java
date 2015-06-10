@@ -265,13 +265,13 @@ public class StudentSectioningWidget extends Composite implements HasResizeHandl
 	*/
 	
 	private void addHistory() {
-		if (iInRestore || !iTrackHistory) return;
+		if (iInRestore || !iTrackHistory || iUserAuthentication.getUser() == null) return;
 		iHistory.add(new HistoryItem());
 		History.newItem(String.valueOf(iHistory.size() - 1), false);
 	}
 	
 	private void updateHistory() {
-		if (iInRestore || !iTrackHistory) return;
+		if (iInRestore || !iTrackHistory || iUserAuthentication.getUser() == null) return;
 		if (!iHistory.isEmpty())
 			iHistory.remove(iHistory.size() - 1);
 		addHistory();
@@ -1278,6 +1278,7 @@ public class StudentSectioningWidget extends Composite implements HasResizeHandl
 		AsyncCallback<CourseRequestInterface> callback =  new AsyncCallback<CourseRequestInterface>() {
 			public void onFailure(Throwable caught) {
 				LoadingWidget.getInstance().hide();
+				clear();
 			}
 			public void onSuccess(final CourseRequestInterface request) {
 				if (request.isSaved() && request.getCourses().isEmpty()) {
