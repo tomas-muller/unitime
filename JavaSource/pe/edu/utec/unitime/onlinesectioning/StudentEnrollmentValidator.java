@@ -56,6 +56,7 @@ public class StudentEnrollmentValidator implements StudentEnrollmentProvider {
 						if (cr.getEnrollment() != null) {
 							check.setMessage(MESSAGES.failedEligibilityAlreadyRegistered());
 							check.setFlag(EligibilityFlag.CAN_ENROLL, false);
+							check.setFlag(EligibilityFlag.READ_ONLY, true);
 							return;
 						}
 					}
