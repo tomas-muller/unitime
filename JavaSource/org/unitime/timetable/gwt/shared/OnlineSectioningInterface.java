@@ -43,6 +43,7 @@ public class OnlineSectioningInterface implements IsSerializable, Serializable {
 			PIN_REQUIRED,
 			CAN_WAITLIST,
 			RECHECK_AFTER_ENROLLMENT,
+			READ_ONLY
 			;
 			
 			public int flag() { return 1 << ordinal(); }

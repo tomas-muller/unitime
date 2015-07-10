@@ -521,6 +521,19 @@ public class StudentSectioningWidget extends Composite implements HasResizeHandl
 													iCustomCheckbox.setEnabled(false);
 												}
 											}
+											if (result.hasFlag(EligibilityFlag.READ_ONLY)) {
+												iEligibilityCheck.setFlag(EligibilityFlag.READ_ONLY, true);
+												iRequests.setEnabled(false);
+												iRequests.setVisible(false);
+												iReset.setEnabled(false);
+												iReset.setVisible(false);
+												iStartOver.setEnabled(false);
+												iStartOver.setVisible(false);
+												for (int i = 0; i < iAssignments.getTable().getRowCount(); i++)
+													iAssignments.getTable().getCellFormatter().setVisible(i, 0, false);
+												iAssignmentGrid.hideAllPins();
+												iShowUnassignments.setVisible(false);
+											}
 										}
 									});
 						}
@@ -665,6 +678,9 @@ public class StudentSectioningWidget extends Composite implements HasResizeHandl
 		String ftParam = "&ft=";
 		boolean hasError = false;
 		float totalCredit = 0f;
+		if (iEligibilityCheck != null && iEligibilityCheck.hasFlag(EligibilityFlag.READ_ONLY)) {
+			iShowUnassignments.setValue(false); iShowUnassignments.setVisible(false);
+		}
 		if (!result.getCourseAssignments().isEmpty() || CONSTANTS.allowEmptySchedule()) {
 			ArrayList<WebTable.Row> rows = new ArrayList<WebTable.Row>();
 			iAssignmentGrid.clear(true);
@@ -1050,8 +1066,6 @@ public class StudentSectioningWidget extends Composite implements HasResizeHandl
 				LoadingWidget.getInstance().hide();
 			iPanel.remove(iCourseRequests);
 			iPanel.insert(iAssignmentPanelWithFocus, 0);
-			iRequests.setVisible(true); iRequests.setEnabled(true);
-			iReset.setVisible(true); iReset.setEnabled(true);
 			iEnroll.setVisible(result.isCanEnroll() && iEligibilityCheck != null && iEligibilityCheck.hasFlag(EligibilityFlag.CAN_ENROLL));
 			if (iEligibilityCheck != null && iEligibilityCheck.hasCheckboxMessage()) {
 				if (iCustomCheckbox == null) {
@@ -1073,7 +1087,18 @@ public class StudentSectioningWidget extends Composite implements HasResizeHandl
 				iEnroll.setEnabled(result.isCanEnroll() && iEligibilityCheck != null && iEligibilityCheck.hasFlag(EligibilityFlag.CAN_ENROLL));
 			}
 			iPrint.setVisible(true); iPrint.setEnabled(true);
-			iStartOver.setVisible(iSavedAssignment != null); iStartOver.setEnabled(iSavedAssignment != null);
+			if (iEligibilityCheck != null && iEligibilityCheck.hasFlag(EligibilityFlag.READ_ONLY)) {
+				iRequests.setEnabled(false); iRequests.setVisible(false);
+				iReset.setEnabled(false); iReset.setVisible(false);
+				iStartOver.setEnabled(false);iStartOver.setVisible(false);
+				for (int i = 0; i < iAssignments.getTable().getRowCount(); i++)
+					iAssignments.getTable().getCellFormatter().setVisible(i, 0, false);
+				iAssignmentGrid.hideAllPins();
+			} else {
+				iRequests.setVisible(true); iRequests.setEnabled(true);
+				iReset.setVisible(true); iReset.setEnabled(true);
+				iStartOver.setVisible(iSavedAssignment != null); iStartOver.setEnabled(iSavedAssignment != null);
+			}
 			if (iExport != null) {
 				iExport.setVisible(true); iExport.setEnabled(true);
 			}
@@ -1303,6 +1328,7 @@ public class StudentSectioningWidget extends Composite implements HasResizeHandl
 
 	public void showSuggestionsAsync(final int rowIndex) {
 		if (rowIndex < 0) return;
+		if (iEligibilityCheck != null && iEligibilityCheck.hasFlag(EligibilityFlag.READ_ONLY)) return;
 		GWT.runAsync(new RunAsyncCallback() {
 			public void onSuccess() {
 				openSuggestionsBox(rowIndex);

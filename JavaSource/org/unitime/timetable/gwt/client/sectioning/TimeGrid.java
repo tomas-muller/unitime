@@ -747,4 +747,10 @@ public class TimeGrid extends Composite {
 			iColor.clear();
 		}
 	}
+	
+	public void hideAllPins() {
+		for (ArrayList<Meeting> meetings: iMeetings)
+			for (Meeting meeting: meetings) 
+				meeting.hidePin();
+	}
 }
