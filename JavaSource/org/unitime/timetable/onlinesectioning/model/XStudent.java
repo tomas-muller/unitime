@@ -50,6 +50,7 @@ import org.unitime.timetable.model.Student;
 import org.unitime.timetable.model.StudentAccomodation;
 import org.unitime.timetable.model.StudentClassEnrollment;
 import org.unitime.timetable.model.StudentGroup;
+import org.unitime.timetable.model.StudentNote;
 import org.unitime.timetable.onlinesectioning.OnlineSectioningHelper;
 
 /**
@@ -66,6 +67,7 @@ public class XStudent extends XStudentId implements Externalizable {
     private String iStatus = null;
     private String iEmail = null;
     private Date iEmailTimeStamp = null;
+    private XStudentNote iLastNote = null;
 
     public XStudent() {
     	super();
@@ -136,6 +138,12 @@ public class XStudent extends XStudentId implements Externalizable {
         
         Collections.sort(iRequests);
         
+        StudentNote note = null;
+        for (StudentNote n: student.getNotes()) {
+        	if (note == null || note.compareTo(n) > 0) note = n;
+        }
+        if (note != null)
+        	iLastNote = new XStudentNote(note);
     }
     
     public XStudent(XStudent student) {
@@ -217,6 +225,10 @@ public class XStudent extends XStudentId implements Externalizable {
     		}
     	}
     }
+    
+    public XStudentNote getLastNote() { return iLastNote; }
+    public boolean hasLastNote() { return iLastNote != null && iLastNote.hasNote(); }
+    public void setLastNote(XStudentNote note) { iLastNote = note; }
 
     public XCourseRequest getRequestForCourse(Long courseId) {
     	for (XRequest request: iRequests)
@@ -340,6 +352,9 @@ public class XStudent extends XStudentId implements Externalizable {
 		iStatus = (String)in.readObject();
 		iEmail = (String)in.readObject();
 		iEmailTimeStamp = (in.readBoolean() ? new Date(in.readLong()) : null);
+		
+		if (in.readBoolean())
+			iLastNote = new XStudentNote(in);
 	}
 
 	@Override
@@ -378,6 +393,10 @@ public class XStudent extends XStudentId implements Externalizable {
 		out.writeBoolean(iEmailTimeStamp != null);
 		if (iEmailTimeStamp != null)
 			out.writeLong(iEmailTimeStamp.getTime());
+		
+		out.writeBoolean(iLastNote != null);
+		if (iLastNote != null)
+			iLastNote.writeExternal(out);
 	}
 	
 	public static class XStudentSerializer implements Externalizer<XStudent> {

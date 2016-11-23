@@ -4260,3 +4260,10 @@ unitime-RoomSharingWidget .legend .blank {
 	padding-top: 2px;
 	padding-right: 2px;
 }
+
+.unitime-StudentsTable .student-note {
+	max-width: 200px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}

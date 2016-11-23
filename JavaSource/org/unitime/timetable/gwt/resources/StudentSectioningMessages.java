@@ -1022,6 +1022,9 @@ public interface StudentSectioningMessages extends Messages {
 	@DefaultMessage("Accommodation")
 	String colAccommodation();
 	
+	@DefaultMessage("Note")
+	String colStudentNote();
+	
 	@DefaultMessage("Send email...")
 	String sendStudentEmail();
 	
@@ -1030,6 +1033,12 @@ public interface StudentSectioningMessages extends Messages {
 	
 	@DefaultMessage("Changing status to {0}...")
 	String changingStatusTo(String newStatus);
+	
+	@DefaultMessage("Changing student note...")
+	String changingStudentNote();
+	
+	@DefaultMessage("Set student note...")
+	String setStudentNote();
 	
 	@DefaultMessage("Subject:")
 	String emailSubject();
@@ -1176,6 +1185,9 @@ public interface StudentSectioningMessages extends Messages {
 	@DefaultMessage("Cancel Students")
 	String buttonMassCancel();
 	
+	@DefaultMessage("Set Note")
+	String buttonSetNote();
+	
 	@DefaultMessage("Cancelling selected students...")
 	String massCanceling();
 	
@@ -1205,6 +1217,9 @@ public interface StudentSectioningMessages extends Messages {
 	
 	@DefaultMessage("Student:")
 	String propStudent();
+	
+	@DefaultMessage("Note:")
+	String propNote();
 	
 	@DefaultMessage("You are not registered for any classes yet. Please click the Build Schedule button in order to complete your registration.")
 	String warnScheduleEmptyOnCourseRequest();
