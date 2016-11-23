@@ -1185,6 +1185,16 @@ public enum ApplicationProperty {
 	@DefaultValue("true")
 	@Description("Event ICS Calendar: set main contact as organizer")
 	EventCalendarSetOrganizer("unitime.events.ics_set_organizer"),
+	
+	@Type(Boolean.class)
+	@DefaultValue("false")
+	@Description("Events: departmental managers can only see class events of their department(s) until the schedule is published (academic session status includes no-role class schedule)")
+	EventHasRoleCheckReportStatus("unitime.events.hasRole.checkSessionStatusForClasses"),
+	
+	@Type(Boolean.class)
+	@DefaultValue("false")
+	@Description("Events Personal Schedule: show exams associated with classes that the person is teaching (not only exams where the person is directly listed as instructor)")
+	EventExamsConsiderClassInstructorAssignments("unitime.events.exams.considerClassInstructors"),
 
 	@Type(Class.class)
 	@Implements(Email.class)
@@ -1503,7 +1513,7 @@ public enum ApplicationProperty {
 	 * <li>String %i is replaced by the room external id 
 	 * </ul>
 	 */
-	@DefaultValue("https://maps.google.com/maps/api/staticmap?center=%x,%y&zoom=16&size=600x400&maptype=roadmap&sensor=false&markers=color:blue|%x,%y")
+	@DefaultValue("https://maps.googleapis.com/maps/api/staticmap?center=%x,%y&zoom=16&size=600x400&maptype=roadmap&sensor=false&markers=color:blue%7c%x,%y")
 	@Description("Rooms: Campus map image")
 	RoomMapStatic("unitime.minimap.url"),
 
@@ -1515,14 +1525,24 @@ public enum ApplicationProperty {
 	 * <li>String %i is replaced by the room external id 
 	 * </ul>
 	 */
-	@DefaultValue("https://maps.google.com/maps/api/staticmap?center=%x,%y&zoom=15&size=300x200&maptype=roadmap&sensor=false&markers=color:blue|%x,%y")
+	@DefaultValue("https://maps.googleapis.com/maps/api/staticmap?center=%x,%y&zoom=15&size=300x200&maptype=roadmap&sensor=false&markers=color:blue%7c%x,%y")
 	@Description("Rooms: minimap to be used in location's tooltip (%x and %y are replaced by the room's coordinates)")
 	RoomHintMinimapUrl("unitime.minimap.hint"),
+	
+	@Description("Rooms: Google static maps API key (see https://developers.google.com/maps/documentation/static-maps/get-api-key#key for more details)")
+	RoomMapStaticApiKey("unitime.minimap.apikey"),
+	
+	@Description("Rooms: Google static maps API secret (that can be used to provide digital signature, see https://developers.google.com/maps/documentation/static-maps/get-api-key#digital-signature for more details)")
+	RoomMapStaticSecret("unitime.minimap.secret"),
 
 	@Type(Boolean.class)
 	@DefaultValue("true")
 	@Description("Rooms: use Google maps to enter room / building coordinates")
 	RoomUseGoogleMap("unitime.coordinates.googlemap"),
+	
+	@Type(String.class)
+	@Description("Rooms: Google maps optional API key (see https://developers.google.com/maps/documentation/javascript/get-api-key#key for more details).")
+	GoogleMapsApiKey("unitime.coordinates.googlemap.apikey"),
 
 	@Type(Boolean.class)
 	@DefaultValue("false")
@@ -2073,6 +2093,12 @@ public enum ApplicationProperty {
 	@Description("Distribution Preferences: show class suffix (external id) next to the class section number")
 	@Since(4.1)
 	DistributionsShowClassSufix("unitime.distributions.showClassSuffixes"),
+	
+	@Type(Boolean.class)
+	@DefaultValue("false")
+	@Description("Reservations: show class suffix (external id) next to the class section number")
+	@Since(4.1)
+	ReservationsShowClassSufix("unitime.reservations.showClassSuffixes"),
 	
 	@Type(Boolean.class)
 	@DefaultValue("false")

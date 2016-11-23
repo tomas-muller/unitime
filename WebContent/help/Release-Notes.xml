@@ -28,6 +28,370 @@
 	<version>4.1.${build.number}</version>
 	<release-date>${build.date}</release-date>
 	<category>
+		<title>Course Timetabling</title>
+		<item>
+			<name>Class: Change Managing Department</name>
+			<description>
+				<line>Do not delete the related class event if committed assignment is not deleted.
+					<line>This fixes an issue of changing a controlling course to another subject area that has the same solver group
+						(the related class event was incorrectly deleted).</line>
+				</line>
+				<line>When a class event is being deleted, do not delete past meetings when tmtbl.classAssign.changePastMeetings is false.</line>
+				<line>Update the class event name when the controlling course of the class has changed.</line>
+			</description>
+		</item>
+		<item>
+			<name>Back-to-Back Distribution Preference</name>
+			<description>
+				<line>Avoid issues (especially ArrayIndexOutOfBoundsException) when classes that are in a back-to-back constraint can partially overlap in time.</line>
+			</description>
+		</item>
+		<item>
+			<name>Max N Hours A Day Distribution Preference</name>
+			<description>
+				<line>Conflict checking for the Max N Hours A Day group constraint corrected: do not return a constant variable (i.e., a committed class of some other problem) as a conflict.</line>
+				<line>Also, return the evaluated placement as a conflict when there is not enough time on the day for the class without unassigning a constant variable.</line>
+				<line>Fixed an issue in conflict checking of Max N Hours A Day group constraint to prevent the constraint from returning null conflicts when there are too many committed classes on a day.</line>
+			</description>
+		</item>
+		<item>
+			<name>Timetable Grid: Subject Area Resource</name>
+			<description>
+				<line>Added Subject Area as a Resource (showing all classes of a particular subject area in one table).</line>
+				<line>When Department is selected as a Resource, show classes by (controlling) department even when there is no departmental spread constraint created (solver mode).</line>
+			</description>
+		</item>
+		<item>
+			<name>Instructional Offering, Classes: Highlight Class Preferences</name>
+			<description>
+				<line>Added ability to set whether preferences that are set directly on a class are to be highlighted using user settings.</line>
+				<line>There is a new settings (named highlightClassPrefs) with the following values:
+					<line>yes ... class preferences are to be highlighted</line>
+					<line>no ... class preferences are not to be highlighted</line>
+					<line>not set ... use the system default, as it is set using unitime.preferences.highlightClassPrefs application property</line>
+				</line>
+			</description>
+		</item>
+		<item>
+			<name>Room Sharing / Instructor Time Preferences Grid</name>
+			<description>
+				<line>Room Sharing / Instructor Time Preferences grid changed to allow for the week to run over Sunday.</line>
+				<line>For example unitime.room.sharingMode5=Su-Th 8am-9pm|6|3|96|252|6 would create a mode going from Sunday till Thursday, in half-hours between 8am and 9pm.</line>
+			</description>
+		</item>
+		<item>
+			<name>Google Maps API Keys</name>
+			<description>
+				<line>Google Maps Static API (used on Rooms, Room Detail, and in the mouseover popups):
+					<line>API key can be provided in the unitime.minimap.apikey configuration property.</line>
+					<line>API secret for digital signatures can be provided in the unitime.minimap.secret configuration property.</line>
+					<line>See https://developers.google.com/maps/documentation/static-maps/get-api-key for more details.</line>
+				</line>
+				<line>Google Maps Standard API (used on Room Edit and Building Edit to enter/show coordinates):
+					<line>API key can be provided in the unitime.coordinates.googlemap.apikey configuration property.</line>
+					<line>See https://developers.google.com/maps/documentation/javascript/get-api-key for more details.</line>
+				</line>
+				<line>Also, use the Google Maps v3 API (maps.googleapis.com) instead of the Google Maps v2 API (maps.google.com).</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>Event Management</title>
+		<item>
+			<name>Event Timetable: Arrange Hours Classes</name>
+			<description>
+				<line>Added ability to show Event Detail page for Arrange Hours classes (classes that are not assigned in time and hence have no ClassEvent associated with).</line>
+				<line>This includes the Enrollments table (showing students enrolled in the class).</line>
+				<line>The Event Detail page for an arrange hours class is only available to users with Event Detail Arrange Hour Class permission.</line>
+				<line>The related permission check requires for the user to either also have the Class Detail permission for the class in question, or that the user is listed among the course coordinators or instructors of the class.</line>
+			</description>
+		</item>
+		<item>
+			<name>Events, Room Availability: Display Room Event Note</name>
+			<description>
+				<line>Display the room note on the top of the room grid on the Events and Room Availability pages (when showing a time grid for a single room).</line>
+				<line>Use white-space:pre-wrap for the room note (follow \n, but wrap the long lines if needed).</line>
+			</description>
+		</item>
+		<item>
+			<name>Events: Display of Class Events</name>
+			<description>
+				<line>
+					It is now possible to restrict departmental managers to only see class events of their department(s) until the schedule is published.
+					That is until the session status includes no-role class schedule (e.g., Timetable Published).
+				</line>
+				<line>Set unitime.events.hasRole.checkSessionStatusForClasses to true to enable this restriction (default is false, i.e., work as before).</line>
+			</description>
+		</item>
+		<item>
+			<name>Personal Schedule (Instructor)</name>
+			<description>
+				<line>Added an option to include indirect examinations (that is cases where an instructor is assigned to a class for which the exam is held).</line>
+				<line>To enable this, set unitime.events.exams.considerClassInstructors to true.
+					<line>If set to false, which is also the default, only exams that have the person assigned as instructor would show.</line>
+				</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>Student Scheduling</title>
+		<item>
+			<name>Request Groups (Batch)</name>
+			<description>
+				<line>Improved ability to keep students of the same request group together by shuffling students of a request group that are spread over multiple sections into a single section or into a fewer number of sections.</line>
+			</description>
+		</item>
+		<item>
+			<name>Reservations</name>
+			<description>
+				<line>When enumerating possible enrollments for a course request, do not skip enrollments without a reservation if there is a matching reservation that is not marked as must be used.</line>
+				<line>This change fixes an issue related to the server's capability to keep the student's current enrollment by creating a dummy reservation for it.
+					<line>A student was not able to move into a different section in certain cases.</line>
+				</line>
+			</description>
+		</item>
+		<item>
+			<name>Online Student Scheduling Reports</name>
+			<description>
+				<line>Make sure each student is present only once in the student scheduling model that is used to generate the online scheduling report.</line>
+				<line>This fixes an issue with showing wrong numbers on the Time &amp; Availability Conflicts report.</line>
+			</description>
+		</item>
+		<item>
+			<name>Student Course Requests</name>
+			<description>
+				<line>Student Course Requests page now checks for student eligibility to register.</line>
+				<line>This means that student status can be used to determine whether the wait-listing is enabled, if a student is allowed to make any changes, etc.</line>
+			</description>
+		</item>
+		<item>
+			<name>Online Student Scheduling Dashboard</name>
+			<description>
+				<line>Allow student status change during assistant mode and during registration (when Student Course Requests page can be used).</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>API</title>
+		<item>
+			<name>Instructors API</name>
+			<description>
+				<line>Added an instructors API that returns a list of instructors for the given department or academic session.</line>
+				<line>Examples
+					<line>GET UniTime/api/instructors?id=&lt;DEP_ID&gt;</line>
+					<line>GET UniTime/api/instructors?term=&lt;TERM&gt;&amp;code=&lt;DEPT_CODE&gt;</line>
+					<line>GET UniTime/api/instructors?term=&lt;TERM&gt;</line>
+				</line>
+				<line>Permission Api Retrieve Instructors is required.</line>
+			</description>
+		</item>
+		<item>
+			<name>Student Groups API</name>
+			<description>
+				<line>Added a student groups API that returns a list of student groups for the given academic session.</line>
+				<line>Example: GET UniTime/api/student-groups?term=&lt;TERM&gt;</line>
+				<line>Permission Api Retrieve Student Groups is required.</line>
+			</description>
+		</item>
+		<item>
+			<name>Curricula API</name>
+			<description>
+				<line>Added a curricula API that returns a list of curricula for the given academic session.</line>
+				<line>Example: GET UniTime/api/curricula?term=&lt;TERM&gt;</line>
+				<line>Permission Api Retrieve Curricula is needed.</line>
+				<line>Same filter parameters as on the Curricula page can be used to filter the results (with c: prefix), examples:
+					<line>GET UniTime/api/curricula?term&lt;TERM&gt;&amp;c:department=0101&amp;c:area=A</line>
+					<line>GET UniTime/api/curricula?term&lt;TERM&gt;&amp;c:text=A/M1+or+A/M2</line>
+				</line>
+				<line>To retrieve more details about a particular curriculum, use:
+					<line>GET UniTime/api/curricula?id=&lt;CURR_ID&gt; (details about a particular curriculum)</line>
+					<line>GET UniTime/api/curricula?term&lt;TERM&gt;&amp;c:text=A/M1+or+A/M2&amp;details=1 (return more information for all matching curricula)</line>
+				</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>Administration</title>
+		<item>
+			<name>Edit Roles: Fixed Delete</name>
+			<description>
+				<line>Edit Roles (bulk edit page for user roles) did not delete roles that were marked for deletion.</line>
+			</description>
+		</item>
+		<item>
+			<name>Academic Areas, Classifications, Majors: Delete</name>
+			<description>
+				<line>Do not allow an academic area, a classification, or a major to be deleted when it is being used (there is a curriculum associated with it).</line>
+				<line>When an academic area is deleted, delete all orphaned majors and minors as well.</line>
+			</description>
+		</item>
+		<item>
+			<name>GWT-based Administration Pages</name>
+			<description>
+				<line>Show the page loading (page grayed out, a blue message in the middle) when working.</line>
+				<line>In some cases, the function is wrapped in a deferred command to ensure that the page loading widget is shown immediately.</line>
+				<line>This is to ensure that no button is pressed multiple times.</line>
+			</description>
+		</item>
+	</category>	
+</release>
+
+<release>
+	<version>4.1.197</version>
+	<release-date>Wed, 27 Jul 2016</release-date>
+	<category>
+		<title>Course Timetabling</title>
+		<item>
+			<name>Reservations: Show Class Suffixes</name>
+			<description>
+				<line>Added ability to show class suffixes (external ids) on the Reservations page and in the Reservations table.</line>
+				<line>Enable by setting unitime.reservations.showClassSuffixes to true (defaults to false).</line>
+			</description>
+		</item>
+		<item>
+			<name>Class Duration Model</name>
+			<description>
+				<line>Avoid NullPointerException when there is no date pattern (i.e., there is no default date pattern defined for the term).</line>
+			</description>
+		</item>
+		<item>
+			<name>Edit Course Offering</name>
+			<description>
+				<line>Fixed an issue that was causing a cross-listed offering to loose all coordinators when a not controlling course was edited.</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>Student Scheduling</title>
+		<item>
+			<name>Distributions</name>
+			<description>
+				<line>Linked Classes: Fixed computation of the Linked Classes constraint when it contains classes of two or more configurations of a course.</line>
+				<line>Add / Edit / Delete Distribution Preference: Notify the online student scheduling about the change, if needed.</line>
+			</description>
+		</item>
+		<item>
+			<name>Reservations (Online)</name>
+			<description>
+				<line>Reservation Limit: Do not cap the reservation limit (by the size of its classes / configurations) when the reservation allows for over the limit assignments.</line>
+				<line>Guess Reservation: Do not consider reservation limit when the reservation must be used.</line>
+				<line>Improve server's capability to keep the student's current enrollment (e.g., when there is a new reservation which the already enrolled students do not follow).
+					<line>If there are reservations: allow user to keep the current enrollment by providing a dummy reservation for it.</line>
+				</line>
+			</description>
+		</item>
+		<item>
+			<name>Request Groups (Batch)</name>
+			<description>
+				<line>Added ability to filter which student groups will be used as request groups by the solver.
+					<line>Students of a "request group" are to be kept together as much as possible.</line>
+					<line>Solver parameter Load.RequestGroupRegExp, containing a regular expression to be matched with student group name (when present).</line>
+				</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>Examination Timetabling</title>
+		<item>
+			<name>Examination Reports: Unavailability Conflicts</name>
+			<description>
+				<line>When counting conflicts from the database, do not create conflicts with no students.</line>
+				<line>This fixes the Direct Student Conflicts report (Examination Reports page).
+					<line>Zero conflicts lines shown when the report is computed from the database and the "Show classes/courses" toggle is unchecked.</line>
+				</line>
+			</description>
+		</item>
+		<item>
+			<name>Examination Reports: Room Splits</name>
+			<description>
+				<line>Show all the assigned rooms of an exam that is split between more than four rooms.</line>
+				<line>With this change 3rd, 4th, 5th, ... room columns are added as needed (the report is no longer limited to four rooms).</line>
+			</description>
+		</item>
+		<item>
+			<name>Required Room Group of Strongly Discouraged Rooms</name>
+			<description>
+				<line>Database Load: If an exam is requiring a room group that contains strongly discouraged rooms, allow the exam to use these rooms even if there is no direct preference on such rooms on the exam.</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>Event Management</title>
+		<item>
+			<name>Email Notifications</name>
+			<description>
+				<line>Event room messages are now included in the confirmation email.</line>
+			</description>
+		</item>
+		<item>
+			<name>Time Selector</name>
+			<description>
+				<line>Fixed an issue showing 12:00 am instead of midnight in the end time of an interval selection (e.g., when adding an event).</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>Room Management</title>
+		<item>
+			<name>Permissions</name>
+			<description>
+				<line>Events: Fixed a JavaScript exception thrown when the user can edit event availability (has Room Edit Event Availability permission) but cannot edit event department (does not have Room Edit Change Event Properties permission).</line>
+				<line>Room Sharing: Do not allow a departmental manager to remove a department from the room sharing table that does not belong to him/her (if the room is not being controlled by a department of the manager).</line>
+				<line>Show room related properties (controlling department, room sharing, ignore distance conflicts, etc.):
+					<line>A user that is allowed to edit course related room properties does not need to have Classes or Instructional Offerings permission.</line>
+					<line>That is, a user with RoomEditChangeRoomProperties, RoomEditChangeControll, RoomDetailAvailability, or RoomEditAvailability permission can also see course related room properties.</line>
+				</line>
+				<line>Show examination related properties (examination capacity, examination problems, period preferences):
+					<line>A user that is allowed to edit examination related room properties does not need to have Examinations permission.</line>
+					<line>That is, a user with RoomEditChangeExaminationStatus, or RoomDetailPeriodPreferences permission can also see examination related room properties.</line>
+				</line>
+				<line>Show event related properties (event department, status, note, break time, event availability):
+					<line>a user that is allowed to edit event related room properties does not need to have Events permission.</line>
+					<line>That is, a user with RoomEditChangeEventProperties, or RoomDetailEventAvailability, or RoomEditEventAvailability cam also see event related room properties.</line>
+				</line>
+			</description>
+		</item>
+		<item>
+			<name>Room Pictures</name>
+			<description>
+				<line>Rooms, Room Detail: added a mouse-over which shows a bigger picture (limited to 800 x 600 pixels).</line>
+				<line>Rooms API: fixed an issue with some pictures not being uploaded / deleted when the API is called multiple times in a sequence for a particular room.</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>Other</title>
+		<item>
+			<name>Security: Possible SQL Injection Fixed</name>
+			<description>
+				<line>Following features were corrected:
+					<line>Instructional Offerings: Search, Worksheet PDF (course number)</line>
+					<line>Instructors: Manage Instructors List (department code)</line>
+					<line>Buildings: Update Rooms (room classifications)</line>
+				</line>
+			</description>
+		</item>
+		<item>
+			<name>API: Buildings</name>
+			<description>
+				<line>Added buildings API that can
+					<line>return list of buildings for an academic session (GET api/buildings?term=&lt;TERM&gt; or GET api/buildings?sessionId=&lt;TERM ID&gt;)</line>
+					<line>creature or update a building (using POST request with the building as a payload)</line>
+					<line>delete a building (DELETE api/buildings?id=&lt;BUILDING ID&gt; or DELETE api/buildings?term=&lt;TERM&gt;&amp;externalId=&lt;EXTID&gt; or DELETE api/buildings?term=&lt;TERM&gt;&amp;building=&lt;ABBV&gt;)</line>
+				</line>
+				<line>Permissions:
+					<line>ApiRetrieveRooms to retrieve list of buildings (GET request)</line>
+					<line>ApiRoomEdit to create, update, and delete a room, together with the appropriate BuildingAdd, BuildingEdit and BuildingDelete permission (POST and DELETE requests)</line>
+				</line>
+			</description>
+		</item>
+	</category>
+</release>
+
+<release>
+	<version>4.1.186</version>
+	<release-date>Sat, 4 Jun 2016</release-date>
+	<category>
 		<title>Event Management</title>
 		<item>
 			<name>Resource Lookup (Personal Timetable)</name>

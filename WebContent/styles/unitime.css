@@ -854,6 +854,16 @@ A.unitime-Hint:link,A.unitime-Hint:visited,A.unitime-Hint:active,A.unitime-Hint:
     -moz-opacity: .75;
 }
 
+.unitime-TimeGrid .room-note {
+	text-align: center;
+	width: 100%;
+	white-space: pre-wrap;
+	color: red;
+	font-size: medium;
+	padding-top: 35px;
+	z-index: 10;
+}
+
 .unitime-TimeGridSelectionPopup {
 	filter: alpha(opacity = 75);
 	opacity: .75;
@@ -1392,15 +1402,12 @@ A.unitime-Hint:link,A.unitime-Hint:visited,A.unitime-Hint:active,A.unitime-Hint:
 	font-size: small;
 	font-family: arial;
 	overflow: hidden;
-	filter: alpha(opacity = 90);
-	opacity: .90;
-    -moz-opacity: .90;
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
 	padding: 4px;
 	color: #000000;
 	border: 1px solid #AB8B00;
-	background: #FFF0AB;
+	background: rgba(255,240,171,0.9);
 	z-index: 1000000;
 }
 
@@ -3241,6 +3248,10 @@ unitime-RoomSharingWidget .legend .blank {
 	max-height: 200px;
 }
 
+.unitime-RoomHint .note {
+	white-space: pre-wrap;
+}
+
 .unitime-VerticalScrollPanel {
 	overflow-x: hidden !important;
     overflow-y: auto !important;
@@ -3342,18 +3353,23 @@ unitime-RoomSharingWidget .legend .blank {
 }
 
 .unitime-RoomAvailabilityHeader .name {
-	text-align: left;
+	float: left;
 	font-weight: bold;
 	font-size: medium;
 }
 
-.unitime-RoomAvailabilityHeader .type {
+.unitime-RoomAvailabilityHeader .warning {
 	text-align: center;
-	color: #6991CE;
+	display: block;
+	color: red;
+	font-size: medium;
+	max-width: 800px;
+	margin: auto;
+	white-space: pre-wrap;
 }
 
-.unitime-RoomAvailabilityHeader .size {
-	text-align: right;
+.unitime-RoomAvailabilityHeader .type {
+	float: right;
 	font-style: italic;
 	color: #6991CE;
 }
@@ -3746,6 +3762,17 @@ unitime-RoomSharingWidget .legend .blank {
 	display: block;
 }
 
+.unitime-RoomPictureHint .picture {
+	max-width: 800px;
+	max-height: 600px;
+	border: 1px solid #9CB0CE;
+}
+
+.unitime-RoomPictureHint .caption {
+	max-width: 800px;
+	white-space: normal;
+}
+
 .unitime-RoomDetail .default {
 	font-style: italic;	
 }
@@ -3768,6 +3795,10 @@ unitime-RoomSharingWidget .legend .blank {
 	padding-left: 5px;
 	vertical-align: top;
 	color: red;
+}
+
+.unitime-RoomDetail .note {
+	white-space: pre-wrap;
 }
 
 .unitime-RoomEdit .map {

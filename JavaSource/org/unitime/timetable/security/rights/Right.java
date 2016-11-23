@@ -344,6 +344,7 @@ public enum Right {
     EventLookupContactAdditional,
     EventLookupSchedule,
     EventDetail(Event.class),
+    EventDetailArrangeHourClass(Class_.class),
     EventEdit(Event.class),
     EventEditClass(ClassEvent.class),
     EventEditExam(ExamEvent.class),
@@ -586,6 +587,9 @@ public enum Right {
     ApiJsonConnector,
     ApiDataExchangeConnector,
     ApiOnlineStudentScheduliung(Session.class),
+    ApiRetrieveInstructors(Session.class),
+    ApiRetrieveCurricula(Session.class),
+    ApiRetrieveStudentGroups(Session.class),
     
     /** People Lookup limitations */
     CanLookupStudents,

@@ -101,6 +101,7 @@ public class RoomInterface implements IsSerializable {
 		private Long iId;
 		private boolean iEditable;
 		private Long iPreferenceId = null;
+		private Boolean iDeletable = null;;
 		
 		public RoomSharingOption() {}
 		public RoomSharingOption(Long id, String color, String code, String name, boolean editable, Long preferenceId) {
@@ -124,6 +125,9 @@ public class RoomInterface implements IsSerializable {
 		
 		public void setEditable(boolean editable) { iEditable = editable; }
 		public boolean isEditable() { return iEditable; }
+		
+		public void setDeletable(Boolean deletable) { iDeletable = deletable; }
+		public boolean isDeletable() { return iDeletable == null ? iEditable : iDeletable.booleanValue(); }
 		
 		public boolean hasPreference() { return iPreferenceId != null;}
 		public void setPreference(Long preferenceId) { iPreferenceId = preferenceId; }
@@ -215,7 +219,7 @@ public class RoomInterface implements IsSerializable {
 			List<RoomSharingOption> options = new ArrayList<RoomSharingOption>();
 			if (iOptions == null) return options;
 			for (RoomSharingOption option: iOptions)
-				if (option.isEditable() && option.getId() >= 0) options.add(option);
+				if (option.isDeletable() && option.getId() >= 0) options.add(option);
 			return options;
 		}
 		
@@ -796,6 +800,7 @@ public class RoomInterface implements IsSerializable {
 		private String iAbbreviation;
 		private String iName;
 		private Double iX, iY;
+		private String iExternalId;
 		
 		public BuildingInterface() {}
 		
@@ -818,6 +823,10 @@ public class RoomInterface implements IsSerializable {
 		
 		public Double getY() { return iY; }
 		public void setY(Double y) { iY = y; }
+		
+		public boolean hasExternalId() { return iExternalId != null && !iExternalId.isEmpty(); }
+		public String getExternalId() { return iExternalId; }
+		public void setExternalId(String externalId) { iExternalId = externalId; }
 		
 		@Override
 		public int hashCode() { return getId().hashCode(); }
@@ -1896,6 +1905,7 @@ public class RoomInterface implements IsSerializable {
 		private List<AttachmentTypeInterface> iPictureTypes = new ArrayList<AttachmentTypeInterface>();
 		private boolean iCanSeeCourses = false, iCanSeeExams = false, iCanSeeEvents = false;
 		private boolean iGridAsText = false, iHorizontal = false, iGoogleMap = false;
+		private String iGoogleMapApiKey = null;
 		private List<RoomSharingDisplayMode> iModes;
 		private String iEllipsoid = null;
 		private boolean iCanChangeAvailability = false, iCanChangeControll = false, iCanChangeExternalId = false, iCanChangeExamStatus = false,
@@ -2081,6 +2091,10 @@ public class RoomInterface implements IsSerializable {
 		
 		public void setGoogleMap(boolean map) { iGoogleMap = map; }
 		public boolean isGoogleMap() { return iGoogleMap; }
+		
+		public void setGoogleMapApiKey(String apiKey) { iGoogleMapApiKey = apiKey; }
+		public boolean hasGoogleMapApiKey() { return iGoogleMapApiKey != null && !iGoogleMapApiKey.isEmpty(); }
+		public String getGoogleMapApiKey() { return iGoogleMapApiKey; }
 		
 		public boolean isCanChangeAvailability() { return iCanChangeAvailability; }
 		public void setCanChangeAvailability(boolean canChangeAvailability) { iCanChangeAvailability = canChangeAvailability; }

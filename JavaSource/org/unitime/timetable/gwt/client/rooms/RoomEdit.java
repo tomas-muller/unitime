@@ -402,8 +402,8 @@ public class RoomEdit extends Composite {
 		iEventDepartment.addChangeHandler(new ChangeHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
-				iEventAvailabilityHeader.setVisible(!"-1".equals(iEventDepartment.getValue(iEventDepartment.getSelectedIndex())));
-				iEventAvailability.setVisible(!"-1".equals(iEventDepartment.getValue(iEventDepartment.getSelectedIndex())));
+				iEventAvailabilityHeader.setVisible(isEventRoom());
+				iEventAvailability.setVisible(isEventRoom());
 			}
 		});
 		
@@ -515,6 +515,14 @@ public class RoomEdit extends Composite {
 		
 		initWidget(iForm);		
 	}
+	
+	protected boolean isEventRoom() {
+		  if ((iRoom.getUniqueId() == null && iProperties.isCanChangeEventProperties()) || iRoom.isCanChangeEventProperties()) {
+		    return !"-1".equals(iEventDepartment.getValue(iEventDepartment.getSelectedIndex()));
+		  } else {
+		    return iRoom.getEventDepartment() != null;
+		  }
+		}
 	
 	public void setProperties(RoomPropertiesInterface properties) {
 		iProperties = properties;
@@ -1058,12 +1066,12 @@ public class RoomEdit extends Composite {
 			(iProperties.isCanSeeEvents() && iRoom.isCanSeeEventAvailability())) {
 			iForm.addHeaderRow(iEventAvailabilityHeader);
 			iForm.addRow(iEventAvailability);
-			iEventAvailabilityHeader.setVisible(!"-1".equals(iEventDepartment.getValue(iEventDepartment.getSelectedIndex())));
+			iEventAvailabilityHeader.setVisible(isEventRoom());
 			if (iRoom.hasEventAvailabilityModel()) {
 				iEventAvailabilityHeader.clearMessage();
 				iEventAvailability.setEditable((iRoom.getUniqueId() == null && iProperties.isCanChangeEventAvailability()) || iRoom.isCanChangeEventAvailability());
 				iEventAvailability.setModel(iRoom.getEventAvailabilityModel());
-				iEventAvailability.setVisible(!"-1".equals(iEventDepartment.getValue(iEventDepartment.getSelectedIndex())));
+				iEventAvailability.setVisible(isEventRoom());
 			} else {
 				iEventAvailabilityHeader.showLoading();
 				iEventAvailability.setVisible(false);
@@ -1077,7 +1085,7 @@ public class RoomEdit extends Composite {
 						iEventAvailabilityHeader.clearMessage();
 						iEventAvailability.setEditable((iRoom.getUniqueId() == null && iProperties.isCanChangeEventAvailability()) || iRoom.isCanChangeEventAvailability());
 						iEventAvailability.setModel(result);
-						iEventAvailability.setVisible(!"-1".equals(iEventDepartment.getValue(iEventDepartment.getSelectedIndex())));
+						iEventAvailability.setVisible(isEventRoom());
 					}
 				});
 			}
@@ -1229,7 +1237,8 @@ public class RoomEdit extends Composite {
 		Window.scrollTo(0, 0);
 		if (iGoogleMap != null && !iGoogleMapInitialized) {
 			iGoogleMapInitialized = true;
-			ScriptInjector.fromUrl("https://maps.google.com/maps/api/js?sensor=false&callback=setupGoogleMap").setWindow(ScriptInjector.TOP_WINDOW).setCallback(
+			ScriptInjector.fromUrl("https://maps.googleapis.com/maps/api/js?" + (iProperties != null && iProperties.hasGoogleMapApiKey() ? "key=" + iProperties.getGoogleMapApiKey() + "&" : "") +
+					"sensor=false&callback=setupGoogleMap").setWindow(ScriptInjector.TOP_WINDOW).setCallback(
 					new Callback<Void, Exception>() {
 						@Override
 						public void onSuccess(Void result) {
@@ -1430,8 +1439,10 @@ public class RoomEdit extends Composite {
 						if (iRoom.getControlDepartment().getId().equals(opt.getId())) { hasDepartment = true; break; }
 					}
 				}
-				if (!hasDepartment)
+				if (!hasDepartment) {
 					iControllingDepartment.setErrorHint(MESSAGES.errorControllingDepartmentNotAmongRoomSharing());
+					result = false;
+				}
 			}
 		}
 
