@@ -66,6 +66,28 @@
 				<line>Consinder demand offering (Take Course Demands from Offering parameter on a course) when showing last-like enrollments and when Curricula Last Like Course Demands are used.</line>
 			</description>
 		</item>
+		<item>
+			<name>Class Assignment</name>
+			<description>
+				<line>Fixed a null exception thrown when there is a student conflict with a class event for a class that is not assigned.
+					<line>This can happen when the Class Assignment page is configured not to change the past and a class is unassigned later in the term.</line>
+				</line>
+				<line>Also, do now show student conflicts with canceled classes / meetings.</line>
+			</description>
+		</item>
+		<item>
+			<name>Time Pattern Icons</name>
+			<description>
+				<line>Fixed an issue that was causing a "Coordinate out of bounds!" error when a time pattern icon for a pattern with more than 7 day combinations was being rendered.</line>
+				<line>The issue was introduced by a recent change allowing Room Sharing and Instructor Time Preferences grid to run over Sunday.</line>
+			</description>
+		</item>
+		<item>
+			<name>Curriculum Course Demands: Precision Fix</name>
+			<description>
+				<line>Make sure that the computation of the curriculum-based student course demands does not get stuck due to the floating point precision inaccuracy.</line>
+			</description>
+		</item>
 	</category>
 	<category>
 		<title>Student Scheduling</title>
