@@ -411,7 +411,7 @@ public class EventResourceTimetable extends Composite implements EventMeetingTab
 			}
 			@Override
 			public boolean isEmpty() {
-				return iMatchingRooms.isEmpty();
+				return iMatchingWeeks.isEmpty();
 			}
 		});
 		iRoomPanel = new RoomSelector();
@@ -1367,7 +1367,7 @@ public class EventResourceTimetable extends Composite implements EventMeetingTab
 		if (iWeekPanel.getValue() != null && !iWeekPanel.getValue().isAll()) {
 			int firstDayOfYear = iWeekPanel.getValue().getFirst().getDayOfYear();
 			int lastDayOfYear = (iWeekPanel.getValue().isOne() ? iWeekPanel.getValue().getFirst() : iWeekPanel.getValue().getLast()).getDayOfYear() + 6;
-			if (meeting.getDayOfYear() < firstDayOfYear || meeting.getDayOfYear() > lastDayOfYear)
+			if (meeting.getMeetingDate() == null || meeting.getDayOfYear() < firstDayOfYear || meeting.getDayOfYear() > lastDayOfYear)
 				return true;
 		}
 		if (iRoomPanel.getValue() != null && !iRoomPanel.getValue().isAll()) {
@@ -1712,6 +1712,7 @@ public class EventResourceTimetable extends Composite implements EventMeetingTab
 		iHeader.setEnabled("print", false);
 		iHeader.setEnabled("export", false);
 		iHeader.setEnabled("operations", false);
+		if (iFooter != null) iFooter.clearMessage();
 	}
 	
 	private void showResults() {
@@ -1722,6 +1723,26 @@ public class EventResourceTimetable extends Composite implements EventMeetingTab
 		iHeader.setEnabled("operations", getSelectedTab() > 0 && iTable.getRowCount() > 1);
 		// iGridOrTablePanel.setVisible(true);
 		// iTabBar.setVisible(true);
+		if (iFooter != null)  {
+			iFooter.clearMessage();
+			if (getResourceType() == ResourceType.PERSON && iData != null && iProperties != null && iProperties.isStudent()) {
+				boolean multiRoom = false;
+				data: for (EventInterface e: iData) {
+					if (e.getType() == EventType.Class || e.getType() == EventType.FinalExam || e.getType() == EventType.MidtermExam) {
+						MeetingInterface last = null;
+						for (MeetingInterface m: e.getMeetings()) {
+							if (last != null && last.overlapsWith(m) && last.hasLocation() && m.hasLocation() && !last.getLocation().equals(m.getLocation())) { multiRoom = true; break data; }
+							last = m;
+						}
+						
+					}
+				}
+				if (multiRoom) {
+					iFooter.setMessage(MESSAGES.warnMultiRoomClassOrExam());
+					// UniTimeNotifications.info(MESSAGES.warnMultiRoomClassOrExam());
+				}
+			}
+		}
 	}
 	
 	private boolean isShowingResults() {

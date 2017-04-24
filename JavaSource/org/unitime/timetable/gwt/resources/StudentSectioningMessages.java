@@ -189,6 +189,9 @@ public interface StudentSectioningMessages extends Messages {
 	
 	@DefaultMessage("&darr; Wait-List")
 	String courseRequestsWaitList();
+	
+	@DefaultMessage("Wait-List &darr;")
+	String courseRequestsWaitListNoArrows();
 
 	@DefaultMessage("{0}. Priority")
 	String courseRequestsPriority(int i);
@@ -1403,4 +1406,22 @@ public interface StudentSectioningMessages extends Messages {
 	
 	@DefaultMessage("Class Schedule")
 	String headerClassSchedule();
+
+	@DefaultMessage("Student\nId")
+	String reportStudentId();
+	
+	@DefaultMessage("Student\nName")
+	String reportStudentName();
+	
+	@DefaultMessage("Student\nEmail")
+	String reportStudentEmail();
+	
+	@DefaultMessage("Course")
+	String reportUnassignedCourse();
+	
+	@DefaultMessage("Conflict")
+	String reportAssignmentConflict();
+	
+	@DefaultMessage("Not-Assigned Course Requests")
+	String reportUnassignedCourseRequests();
 }

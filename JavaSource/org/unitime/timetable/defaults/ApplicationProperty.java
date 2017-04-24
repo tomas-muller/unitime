@@ -511,6 +511,11 @@ public enum ApplicationProperty {
 	@DefaultValue("false")
 	@Description("Data Exchange: export default date pattern in course offering export")
 	DataExchangeIncludeDefaultDatePattern("tmtbl.export.defaultDatePattern"),
+	
+	@Type(Boolean.class)
+	@DefaultValue("false")
+	@Description("Data Exchange: export individual class meetings in course offering export")
+	DataExchangeIncludeMeetings("tmtbl.export.classMeetings"),
 
 	@Description("Data Exchange: default import timetabling manager (e.g., if executed from command line)")
 	DataExchangeXmlManager("unitime.xml.manager"),
@@ -1427,6 +1432,11 @@ public enum ApplicationProperty {
 	@DefaultValue("0")
 	@Description("Session Start/End Month: add a given number of days to the first / last day of a session")
 	SessionNrExcessDays("unitime.session.nrExcessDays"),
+	
+	@Type(Integer.class)
+	@DefaultValue("0")
+	@Description("Session Default Computation: shift current date by the given number of days")
+	SessionDefaultShiftDays("unitime.session.defaultSessionShiftDays"),
 
 	@Type(Integer.class)
 	@DefaultValue("3")
@@ -2087,6 +2097,12 @@ public enum ApplicationProperty {
 	@Description("Online Student Scheduling: use GWT-based confirmation dialog (instead of the default one)")
 	@Since(4.1)
 	OnlineSchedulingGWTConfirmations("unitime.enrollment.gwtConfirmations"),
+	
+	@Type(Boolean.class)
+	@DefaultValue("false")
+	@Description("Online Student Scheduling: hide up and down arrows in the Course Requests table")
+	@Since(4.1)
+	OnlineSchedulingNoRequestArrows("unitime.enrollment.hideCourseRequestArrows"),
 
 	@Type(Boolean.class)
 	@DefaultValue("false")

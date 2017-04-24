@@ -30,6 +30,163 @@
 	<category>
 		<title>Course Timetabling</title>
 		<item>
+			<name>Automatic Hierarchical Constraints</name>
+			<description>
+				<line>Improved parsing of the General.AutomaticHierarchicalConstraints parameter.</line>
+				<line>If there is a date pattern that is not used or that does not exist, do not skip parsing of the rest of the parameter.</line>
+				<line>Check for English (not localized) versions of the preferences and for preference abbreviations.</line>
+				<line>Flexible and other constraints (that are not implemented by the GroupConstraint class) are now allowed as well.</line>
+				<line>Date patterns containing commas must use quotation marks, e.g., Preferred Same Start &quot;Week 1,3,5&quot;.</line>
+			</description>
+		</item>
+		<item>
+			<name>Automatic Student Constraints</name>
+			<description>
+				<line>Added ability to automatically post certain distribution constraints between classes that are attended by the same students
+					(the given constraints are posted between all classes of a student).</line>
+				<line>This is only enabled when deterministic student sectioning is used.</line>
+				<line>The list of constraints that are to be posted (together with their preferences) is given by solver parameter General.AutomaticStudentConstraints.
+					<line>Contains a comma delimited list of &lt;preference&gt; &lt;constraint&gt;, for example:</line>
+					<line>Preferred Max 1 Break, Strongly Preferred At Most 6 Hrs, Required 8h Work-Day</line>
+				</line>
+				<line>By default, the given constraints are posted on every set of classes that are attended by at least 5 students (must be all classes those 5 students are attending).
+					<line>This can be changed by General.AutomaticStudentConstraints.StudentLimit solver parameter (defaults to 5).</line>
+				</line>
+			</description>
+		</item>
+		<item>
+			<name>Timetable Grid</name>
+			<description>
+				<line>Added room tooltip when resource is Room and when hovering over a room name (top left corner of each table).</line>
+			</description>
+		</item>
+		<item>
+			<name>Curricula</name>
+			<description>
+				<line>Last-Like Course Demands: Consider demand offering (Take Course Demands from Offering parameter on a course) when showing last-like enrollments and when Curricula Last Like Course Demands are used.</line>
+				<line>Multiple Majors: Fixed a null exception thrown when there are last-like or real students matching multiple majors of a multi-major curriculum on Oracle.</line>
+			</description>
+		</item>
+		<item>
+			<name>Class Assignment</name>
+			<description>
+				<line>Fixed a null exception thrown when there is a student conflict with a class event for a class that is not assigned.
+					<line>This can happen when the Class Assignment page is configured not to change the past and a class is unassigned later in the term.</line>
+				</line>
+				<line>Also, do now show student conflicts with canceled classes / meetings.</line>
+			</description>
+		</item>
+		<item>
+			<name>Time Pattern Icons</name>
+			<description>
+				<line>Fixed an issue that was causing a "Coordinate out of bounds!" error when a time pattern icon for a pattern with more than 7 day combinations was being rendered.</line>
+				<line>The issue was introduced by a recent change allowing Room Sharing and Instructor Time Preferences grid to run over Sunday.</line>
+			</description>
+		</item>
+		<item>
+			<name>Curriculum Course Demands: Precision Fix</name>
+			<description>
+				<line>Make sure that the computation of the curriculum-based student course demands does not get stuck due to the floating point precision inaccuracy.</line>
+			</description>
+		</item>
+		<item>
+			<name>Instructor Preferences</name>
+			<description>
+				<line>Added ability for an instructor to edit his/her preferences, using Courses > Input Data > Instructor Detail page.</line>
+				<line>Permissions needed: Instructor Detail and Instructor Preferences, but NEVER HasRole permission (which should be reserved for manager roles).</line>
+				<line>Session/department statuses needed: Owner View (to see the detail page) and Owner Edit (for the ability to edit preferences).</line>
+				<line>If an instructor exists in two or more departments, there is a Department drop-down on the Instructor Detail page allowing the user to switch departments.</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>Student Scheduling</title>
+		<item>
+			<name>Banner XE Interface</name>
+			<description>
+				<line>When dropping a section and the DW action is not available, check for other D% action that can be used.</line>
+				<line>Log all the exceptions and Banner messages as warnings. Also log all the exceptions when no enrollment change is detected.
+					<line>This fixes the issue of not seeing the &quot;Section not available for student scheduling.&quot; in the log.</line>
+				</line>
+			</description>
+		</item>
+		<item>
+			<name>Course Requests, Student Scheduling Assistant</name>
+			<description>
+				<line>Added ability to hide up and down arrows in the Course Requests table.</line>
+				<line>This can be done by setting the application property unitime.enrollment.hideCourseRequestArrows to true (defaults to false).</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>Event Management</title>
+		<item>
+			<name>Personal Schedule: Examinations and Course-Related Events</name>
+			<description>
+				<line>Fixed an issue introduced by commit 8d552bf: OfferingCoordinator is not mapped error is shown when looking up a coordinator schedule (role:Coordinator in the event filter).</line>
+			</description>
+		</item>
+		<item>
+			<name>Event Timetable: Arrange Hours Classes</name>
+			<description>
+				<line>Do not show Arrange Hours classes on the week of January 1.</line>
+				<line>That is, when a week containing January 1 is selected in the Filter, not All Weeks or All Matching Weeks.</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>Examinations</title>
+		<item>
+			<name>PDF Reports: Period Chart</name>
+			<description>
+				<line>Period Chart report: corrected breaking of the report over the week's end.</line>
+				<line>This fixes an issue of not printing Monday periods in some cases.</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>Administration</title>
+		<item>
+			<name>Session Roll Forward: Fixed bug with Subject Area Roll Forward</name>
+			<description>
+				<line>The roll forward has been updated to fail when rolling subject areas forward into a session that does not have departments that match the departments the subject areas should be attached to.</line>
+			</description>
+		</item>
+		<item>
+			<name>Data Exchange: Course Offerings and Course Timetable Exports</name>
+			<description>
+				<line>Added ability to include individual class meetings in the course offerings and course timetable exports.</line>
+				<line>This feature can be enabled by setting the tmtbl.export.classMeetings application property to true (defaults to false).</line>
+			</description>
+		</item>
+		<item>
+			<name>HQL Reports: Export HQL</name>
+			<description>
+				<line>Improved the ability to download a particular HQL report, using UniTime/export?output=hql-report.csv URL.</line>
+				<line>Academic session can be selected using term parameter.</line>
+				<line>HQL appearance and admin-only permissions are checked (the user must have the appropriate permissions to be able to get the report).</line>
+				<line>Report parameter can contain name of the report (instead of unique id).</line>
+				<line>Individual report parameters can be looked up (no need to retrieve unique ids first), for example:
+					DEPARTMENT=&lt;deptCode&gt;, SUBJECT=&lt;abbreviation&gt;, ROOM=&lt;name&gt;, or RoomType=&lt;reference&gt;.</line>
+			</description>
+		</item>
+		<item>
+			<name>User Context: Default Academic Session</name>
+			<description>
+				<line>Added ability to shift current date by a given number of days when computing default academic session.</line>
+				<line>Application property unitime.session.defaultSessionShiftDays, defaults to 0.</line>
+				<line>This could be used, e.g., to start showing users the next academic session two weeks before the classes / events start.</line>
+			</description>
+		</item>
+	</category>
+</release>
+
+<release>
+	<version>4.1.218</version>
+	<release-date>Tue, 10 Jan 2017</release-date>
+	<category>
+		<title>Course Timetabling</title>
+		<item>
 			<name>Class: Change Managing Department</name>
 			<description>
 				<line>Do not delete the related class event if committed assignment is not deleted.
@@ -94,6 +251,19 @@
 				<line>Also, use the Google Maps v3 API (maps.googleapis.com) instead of the Google Maps v2 API (maps.google.com).</line>
 			</description>
 		</item>
+		<item>
+			<name>Instuctional Offerings, Classes, Examinations: Back</name>
+			<description>
+				<line>Encode the entered course number to UTF-8 for the navigation / back.</line>
+				<line>This fixes an issue with URL encoding when course number contains non-ASCII characters.</line>
+			</description>
+		</item>
+		<item>
+			<name>Add/Edit Curriculum</name>
+			<description>
+				<line>Shared Students Tooltip: Computation of projected students that are shared between two or more courses corrected.</line>
+			</description>
+		</item>
 	</category>
 	<category>
 		<title>Event Management</title>
@@ -124,11 +294,19 @@
 			</description>
 		</item>
 		<item>
-			<name>Personal Schedule (Instructor)</name>
+			<name>Personal Schedule</name>
 			<description>
-				<line>Added an option to include indirect examinations (that is cases where an instructor is assigned to a class for which the exam is held).</line>
-				<line>To enable this, set unitime.events.exams.considerClassInstructors to true.
+				<line>Instructor: Added an option to include indirect examinations (that is cases where an instructor is assigned to a class for which the exam is held).
+					<line>To enable this, set unitime.events.exams.considerClassInstructors to true.</line>
 					<line>If set to false, which is also the default, only exams that have the person assigned as instructor would show.</line>
+				</line>
+				<line>When showing an exam (or a course-related event) that is set on multiple classes, only show classes that relates to the student (or instructor).
+					<line>Show all owners when the person is also the instructor associated directly with the exam or the contact of the course-related event.</line>
+					<line>Show all owners that the person is coordinating (if any).</line>
+				</line>
+				<line>Multiple Rooms Warning: The following warning has been added at the bottom of the page when a student is looking at a personal schedule and there
+					is at least one class or exam with two meetings at the same date and time with different rooms (e.g., an exam is placed in two or more rooms):
+					<line>When multiple rooms are listed, please consult your instructor regarding your class or examination room location.</line>
 				</line>
 			</description>
 		</item>
@@ -168,6 +346,26 @@
 			<name>Online Student Scheduling Dashboard</name>
 			<description>
 				<line>Allow student status change during assistant mode and during registration (when Student Course Requests page can be used).</line>
+				<line>Classes for student dialog: Include Enrolled column containing student class enrollment date when the student is enrolled and course request date when not enrolled.</line>
+			</description>
+		</item>
+		<item>
+			<name>Student Sectioning Solver Reports, Online Student Scheduling Reports</name>
+			<description>
+				<line>Not-Assigned Course Requests: Added a new report showing individual course requests that are left unassigned.</line>
+				<line>Added ability to show all classes of an individual student when a row containing student unique id (in the first column named __Student) is clicked.</line>
+				<line>Export CSV: Do not export the first column when the column name starts with __ (contains unique id of a class, offering, exam, student, etc.).</line>
+			</description>
+		</item>
+		<item>
+			<name>Student Scheduling Assistnat, Student Scheduling Dashboard, Enrollments tables</name>
+			<description>
+				<line>Show room mouse-over tooltips on various pages, including
+					<line>Student Scheduling Assistant: Class Schedule tab</line>
+					<line>Course Finder: List of Classes tab</line>
+					<line>Class, Instructional Offering, Examination, Event, Instructor: Enrollments table</line>
+					<line>Student Scheduling Dashboard: Enrollments tab, Enrollments of student table</line>
+				</line>
 			</description>
 		</item>
 	</category>
@@ -233,7 +431,7 @@
 				<line>This is to ensure that no button is pressed multiple times.</line>
 			</description>
 		</item>
-	</category>	
+	</category>
 </release>
 
 <release>

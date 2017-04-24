@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.unitime.timetable.gwt.client.ToolBox;
+import org.unitime.timetable.gwt.client.page.UniTimeNotifications;
 import org.unitime.timetable.gwt.client.widgets.LoadingWidget;
 import org.unitime.timetable.gwt.client.widgets.SimpleForm;
 import org.unitime.timetable.gwt.client.widgets.UniTimeHeaderPanel;
@@ -39,6 +40,8 @@ import org.unitime.timetable.gwt.command.client.GwtRpcResponse;
 import org.unitime.timetable.gwt.command.client.GwtRpcService;
 import org.unitime.timetable.gwt.command.client.GwtRpcServiceAsync;
 import org.unitime.timetable.gwt.resources.GwtMessages;
+import org.unitime.timetable.gwt.resources.StudentSectioningMessages;
+import org.unitime.timetable.gwt.shared.ClassAssignmentInterface;
 import org.unitime.timetable.gwt.shared.EventInterface.EncodeQueryRpcRequest;
 import org.unitime.timetable.gwt.shared.EventInterface.EncodeQueryRpcResponse;
 
@@ -66,6 +69,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class SectioningReports extends Composite {
 	protected static final GwtMessages MESSAGES = GWT.create(GwtMessages.class);
+	protected static final StudentSectioningMessages SCT_MSG = GWT.create(StudentSectioningMessages.class);
 	private static final GwtRpcServiceAsync RPC = GWT.create(GwtRpcService.class);
 	private static NumberFormat PF = NumberFormat.getFormat("0.0%");
 	private static NumberFormat DF = NumberFormat.getFormat("0.00");
@@ -94,6 +98,7 @@ public class SectioningReports extends Composite {
 		NOT_ALLOWED_TIME_OVERLAPS("Not Allowed Time Overlaps", "org.unitime.timetable.reports.studentsct.IndividualStudentTimeOverlaps", "includeAllowedOverlaps", "false"),
 		INDIVIDUAL_TIME_OVERLAPS_BT("Individual Student Time Overlaps (Exclude Break Times)", "org.unitime.timetable.reports.studentsct.IndividualStudentTimeOverlaps", "ignoreBreakTimeConflicts", "true"),
 		NOT_ALLOWED_TIME_OVERLAPS_BT("Not Allowed Time Overlaps (Exclude Break Times)", "org.unitime.timetable.reports.studentsct.IndividualStudentTimeOverlaps", "ignoreBreakTimeConflicts", "true", "includeAllowedOverlaps", "false"),
+		NOT_ASSIGNED_COURSE_REQUESTS(SCT_MSG.reportUnassignedCourseRequests(), "org.unitime.timetable.reports.studentsct.UnasignedCourseRequests"),
 		;
 		
 		String iName, iImplementation;
@@ -290,6 +295,27 @@ public class SectioningReports extends Composite {
 						ToolBox.open(GWT.getHostPageBaseURL() + "examDetail.do?examId=" + event.getData().getCell(0));
 					else if ("__Event".equals(iHead.getCell(0)))
 						ToolBox.open(GWT.getHostPageBaseURL() + "gwt.jsp?page=events#event=" + event.getData().getCell(0));
+					else if ("__Student".equals(iHead.getCell(0))) {
+						ClassAssignmentInterface.Student student = new ClassAssignmentInterface.Student();
+						student.setId(Long.valueOf(event.getData().getCell(0)));
+						for (int i = 0; i < iHead.getLength(); i++)
+							if (SCT_MSG.reportStudentId().equals(iHead.getCell(i)))
+								student.setExternalId(event.getData().getCell(i));
+							else if (SCT_MSG.reportStudentName().equals(iHead.getCell(i)))
+								student.setName(event.getData().getCell(i));
+						LoadingWidget.getInstance().show(MESSAGES.waitPlease());
+						new EnrollmentTable(false, iOnline).showStudentSchedule(student, new AsyncCallback<Boolean>() {
+							@Override
+							public void onFailure(Throwable caught) {
+								LoadingWidget.getInstance().hide();
+								UniTimeNotifications.error(caught.getMessage());
+							}
+							@Override
+							public void onSuccess(Boolean result) {
+								LoadingWidget.getInstance().hide();
+							}
+						});
+					}
 				}
 			}
 		});

@@ -391,11 +391,11 @@ public class SectioningServlet implements SectioningService, DisposableBean {
 				}
 				if (p != null && p.getRoomLocations() != null) {
 					for (RoomLocation rm: p.getRoomLocations()) {
-						a.addRoom(rm.getName());
+						a.addRoom(rm.getId(), rm.getName());
 					}
 				}
 				if (p != null && p.getRoomLocation() != null) {
-					a.addRoom(p.getRoomLocation().getName());
+					a.addRoom(p.getRoomLocation().getId(), p.getRoomLocation().getName());
 				}
 				if (!clazz.getClassInstructors().isEmpty()) {
 					for (Iterator<ClassInstructor> i = clazz.getClassInstructors().iterator(); i.hasNext(); ) {
@@ -1232,6 +1232,8 @@ public class SectioningServlet implements SectioningService, DisposableBean {
 								course.setTitle(enrollment.getCourseOffering().getTitle());
 								course.setWaitListed(enrollment.getCourseRequest() != null && enrollment.getCourseRequest().getCourseDemand().getWaitlist() != null && enrollment.getCourseRequest().getCourseDemand().getWaitlist().booleanValue());
 								credit = enrollment.getCourseOffering().getCredit();
+								if (enrollment.getCourseRequest() != null)
+									course.setRequestedDate(enrollment.getCourseRequest().getCourseDemand().getTimestamp());
 							}
 							ClassAssignment clazz = course.addClassAssignment();
 							clazz.setClassId(enrollment.getClazz().getUniqueId());
@@ -1264,6 +1266,7 @@ public class SectioningServlet implements SectioningService, DisposableBean {
 		                    if (enrollment.getClazz().getSchedulingSubpart().getInstrOfferingConfig().isUnlimitedEnrollment() || limit >= 9999) limit = -1;
 		                    clazz.setCancelled(enrollment.getClazz().isCancelled());
 							clazz.setLimit(new int[] { enrollment.getClazz().getEnrollment(), limit});
+							clazz.setEnrolledDate(enrollment.getTimestamp());
 							if (placement != null) {
 								if (placement.getTimeLocation() != null) {
 									for (DayCode d : DayCode.toDayCodes(placement.getTimeLocation().getDayCode()))
@@ -1274,10 +1277,10 @@ public class SectioningServlet implements SectioningService, DisposableBean {
 									clazz.setDatePattern(placement.getTimeLocation().getDatePatternName());
 								}
 								if (placement.getNrRooms() == 1) {
-									clazz.addRoom(placement.getRoomLocation().getName());
+									clazz.addRoom(placement.getRoomLocation().getId(), placement.getRoomLocation().getName());
 								} else if (placement.getNrRooms() > 1) {
 									for (RoomLocation rm: placement.getRoomLocations())
-										clazz.addRoom(rm.getName());
+										clazz.addRoom(rm.getId(), rm.getName());
 								}
 							}
 							if (enrollment.getClazz().getDisplayInstructor())
@@ -1318,6 +1321,7 @@ public class SectioningServlet implements SectioningService, DisposableBean {
 											}
 									}
 								}
+								course.setRequestedDate(demand.getTimestamp());
 								ret.add(course);
 							} else {
 								CourseRequest request = null;
@@ -1329,6 +1333,7 @@ public class SectioningServlet implements SectioningService, DisposableBean {
 								if (request == null) continue;
 								CourseAssignment course = new CourseAssignment();
 								courses.put(request.getCourseOffering().getUniqueId(), course);
+								course.setRequestedDate(demand.getTimestamp());
 								ret.add(course);
 								course.setAssigned(false);
 								course.setWaitListed(demand.getWaitlist() != null && demand.getWaitlist().booleanValue());
@@ -2033,6 +2038,7 @@ public class SectioningServlet implements SectioningService, DisposableBean {
 				check.setFlag(EligibilityFlag.ALTERNATIVES_DROP, ApplicationProperty.OnlineSchedulingAlternativesDrop.isTrue());
 				check.setFlag(EligibilityFlag.GWT_CONFIRMATIONS, ApplicationProperty.OnlineSchedulingGWTConfirmations.isTrue());
 				check.setFlag(EligibilityFlag.DEGREE_PLANS, CustomDegreePlansHolder.hasProvider());
+				check.setFlag(EligibilityFlag.NO_REQUEST_ARROWS, ApplicationProperty.OnlineSchedulingNoRequestArrows.isTrue());
 				return check;
 			}
 			
@@ -2070,6 +2076,7 @@ public class SectioningServlet implements SectioningService, DisposableBean {
 			check.setFlag(EligibilityFlag.ALTERNATIVES_DROP, ApplicationProperty.OnlineSchedulingAlternativesDrop.isTrue());
 			check.setFlag(EligibilityFlag.GWT_CONFIRMATIONS, ApplicationProperty.OnlineSchedulingGWTConfirmations.isTrue());
 			check.setFlag(EligibilityFlag.DEGREE_PLANS, CustomDegreePlansHolder.hasProvider());
+			check.setFlag(EligibilityFlag.NO_REQUEST_ARROWS, ApplicationProperty.OnlineSchedulingNoRequestArrows.isTrue());
 			check.setSessionId(sessionId);
 			check.setStudentId(studentId);
 			
