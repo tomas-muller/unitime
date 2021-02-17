@@ -1407,9 +1407,6 @@ public interface GwtMessages extends Messages {
 	@DefaultMessage("Majors:")
 	String propMajors();
 	
-	@DefaultMessage("Minors:")
-	String propMinors();
-	
 	@DefaultMessage("Academic Classification:")
 	String propAcademicClassification();
 	

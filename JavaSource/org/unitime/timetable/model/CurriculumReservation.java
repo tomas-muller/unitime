@@ -34,22 +34,13 @@ public class CurriculumReservation extends BaseCurriculumReservation {
 
 	@Override
 	public boolean isApplicable(Student student, CourseRequest request) {
-		if (!getMajors().isEmpty() || getMinors().isEmpty())
-			for (StudentAreaClassificationMajor acm: student.getAreaClasfMajors()) {
-				if (getAreas().contains(acm.getAcademicArea())) {
-					if (getClassifications().isEmpty() || getClassifications().contains(acm.getAcademicClassification())) {
-						if (getMajors().isEmpty() || getMajors().contains(acm.getMajor())) return true;
-					}
+		for (StudentAreaClassificationMajor acm: student.getAreaClasfMajors()) {
+			if (acm.getAcademicArea().equals(getArea())) {
+				if (getClassifications().isEmpty() || getClassifications().contains(acm.getAcademicClassification())) {
+					if (getMajors().isEmpty() || getMajors().contains(acm.getMajor())) return true;
 				}
 			}
-		if (!getMinors().isEmpty())
-			for (StudentAreaClassificationMinor acm: student.getAreaClasfMinors()) {
-				if (getAreas().contains(acm.getAcademicArea())) {
-					if (getClassifications().isEmpty() || getClassifications().contains(acm.getAcademicClassification())) {
-						if (getMinors().contains(acm.getMinor())) return true;
-					}
-				}
-			}
+		}
 		return false;
 	}
 	
@@ -74,10 +65,7 @@ public class CurriculumReservation extends BaseCurriculumReservation {
 	}
 	
 	public boolean hasArea(String areaAbbv) {
-		if (getAreas() == null || getAreas().isEmpty()) return false;
-		for (AcademicArea area: getAreas())
-			if (area.getAcademicAreaAbbreviation().equals(areaAbbv)) return true;
-		return false;
+		return getArea() != null && getArea().getAcademicAreaAbbreviation().equals(areaAbbv);
 	}
 	
 	public boolean hasClassification(String classificationCode) {
@@ -88,15 +76,9 @@ public class CurriculumReservation extends BaseCurriculumReservation {
 	}
 	
 	public boolean hasMajor(String majorCode) {
-		if (getMajors().isEmpty() && getMinors().isEmpty()) return true;
+		if (getMajors().isEmpty()) return true;
 		for (PosMajor c: getMajors())
 			if (c.getCode().equals(majorCode)) return true;
-		return false;
-	}
-	
-	public boolean hasMinor(String minorCode) {
-		for (PosMinor c: getMinors())
-			if (c.getCode().equals(minorCode)) return true;
 		return false;
 	}
 }
