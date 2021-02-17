@@ -196,12 +196,6 @@ public class XCurriculumReservation extends XReservation {
     public boolean isExpired() {
     	return (getType() == XReservationType.CurriculumOverride && iExpired != null ? iExpired.booleanValue() : super.isExpired());
     }
-    
-    @Override
-    public boolean isAlwaysExpired() {
-    	return getType() == XReservationType.CurriculumOverride && iExpired != null && iExpired.booleanValue();
-    }
-
 
     /**
      * Check the area, classifications and majors

@@ -141,11 +141,6 @@ public class XIndividualReservation extends XReservation {
     }
     
     @Override
-    public boolean isAlwaysExpired() {
-    	return getType() == XReservationType.IndividualOverride && iExpired != null && iExpired.booleanValue();
-    }
-    
-    @Override
     public boolean canBreakLinkedSections() {
     	return (iBreakLinkedSections == null ? false : iBreakLinkedSections.booleanValue());
     }
