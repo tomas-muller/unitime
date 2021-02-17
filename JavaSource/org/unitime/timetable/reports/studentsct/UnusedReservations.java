@@ -35,6 +35,7 @@ import org.cpsolver.ifs.assignment.AssignmentComparator;
 import org.cpsolver.ifs.util.CSVFile;
 import org.cpsolver.ifs.util.DataProperties;
 import org.cpsolver.studentsct.StudentSectioningModel;
+import org.cpsolver.studentsct.model.AcademicAreaCode;
 import org.cpsolver.studentsct.model.AreaClassificationMajor;
 import org.cpsolver.studentsct.model.Course;
 import org.cpsolver.studentsct.model.CourseRequest;
@@ -45,7 +46,6 @@ import org.cpsolver.studentsct.model.Request;
 import org.cpsolver.studentsct.model.SctAssignment;
 import org.cpsolver.studentsct.model.Section;
 import org.cpsolver.studentsct.model.Student;
-import org.cpsolver.studentsct.model.StudentGroup;
 import org.cpsolver.studentsct.report.StudentSectioningReport;
 import org.cpsolver.studentsct.reservation.CourseReservation;
 import org.cpsolver.studentsct.reservation.CurriculumReservation;
@@ -124,8 +124,9 @@ public class UnusedReservations implements StudentSectioningReport {
     
     protected String group(Student student) {
     	String group = "";
-    	for (StudentGroup aac: student.getGroups())
-    		group += (group.isEmpty() ? "" : ", ") + aac.getReference();
+    	for (AcademicAreaCode aac: student.getMinors())
+    		if (!"A".equals(aac.getArea()))
+    			group += (group.isEmpty() ? "" : ", ") + aac.getCode();
     	return group;    	
     }
 
