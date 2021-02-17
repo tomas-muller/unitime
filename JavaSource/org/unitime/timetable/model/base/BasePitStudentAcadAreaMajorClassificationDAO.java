@@ -61,9 +61,4 @@ public abstract class BasePitStudentAcadAreaMajorClassificationDAO extends _Root
 	public List<PitStudentAcadAreaMajorClassification> findByMajor(org.hibernate.Session hibSession, Long majorId) {
 		return hibSession.createQuery("from PitStudentAcadAreaMajorClassification x where x.major.uniqueId = :majorId").setLong("majorId", majorId).list();
 	}
-
-	@SuppressWarnings("unchecked")
-	public List<PitStudentAcadAreaMajorClassification> findByConcentration(org.hibernate.Session hibSession, Long concentrationId) {
-		return hibSession.createQuery("from PitStudentAcadAreaMajorClassification x where x.concentration.uniqueId = :concentrationId").setLong("concentrationId", concentrationId).list();
-	}
 }

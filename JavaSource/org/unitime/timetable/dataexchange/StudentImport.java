@@ -274,7 +274,6 @@ public class StudentImport extends BaseImport {
 				}
 				
 				String concentration = e.attributeValue("concentration");
-				Double weight = Double.valueOf(e.attributeValue("weight", "1.0"));
 				
     			String clasf = e.attributeValue("academicClass");
     			if (clasf == null) {
@@ -294,18 +293,11 @@ public class StudentImport extends BaseImport {
     	        				acm.setMajor(m);
     	        				acm.setStudent(student);
     	        				acm.setConcentration(concentration == null ? null : code2conc.get(area + ":" + code + ":" + concentration));
-    	        				acm.setWeight(weight);
     	        				student.getAreaClasfMajors().add(acm);
     	                		if (student.getUniqueId() != null)
     	                			updatedStudents.add(student.getUniqueId());
     	    				} else if (!ToolBox.equals(concentration, acm.getConcentration() == null ? null : acm.getConcentration().getCode())) {
     	    					acm.setConcentration(concentration == null ? null : code2conc.get(area + ":" + code + ":" + concentration));
-    	    					acm.setWeight(weight);
-    	    					iHibSession.update(acm);
-    	    					if (student.getUniqueId() != null)
-    	                			updatedStudents.add(student.getUniqueId());
-    	    				} else if (!ToolBox.equals(acm.getWeight(), weight)) {
-    	    					acm.setWeight(weight);
     	    					iHibSession.update(acm);
     	    					if (student.getUniqueId() != null)
     	                			updatedStudents.add(student.getUniqueId());
@@ -325,18 +317,11 @@ public class StudentImport extends BaseImport {
         				acm.setMajor(m);
         				acm.setStudent(student);
         				acm.setConcentration(concentration == null ? null : code2conc.get(area + ":" + code + ":" + concentration));
-        				acm.setWeight(weight);
         				student.getAreaClasfMajors().add(acm);
                 		if (student.getUniqueId() != null)
                 			updatedStudents.add(student.getUniqueId());
     				} else if (!ToolBox.equals(concentration, acm.getConcentration() == null ? null : acm.getConcentration().getCode())) {
     					acm.setConcentration(concentration == null ? null : code2conc.get(area + ":" + code + ":" + concentration));
-    					acm.setWeight(weight);
-    					iHibSession.update(acm);
-    					if (student.getUniqueId() != null)
-                			updatedStudents.add(student.getUniqueId());
-    				} else if (!ToolBox.equals(acm.getWeight(), weight)) {
-    					acm.setWeight(weight);
     					iHibSession.update(acm);
     					if (student.getUniqueId() != null)
                 			updatedStudents.add(student.getUniqueId());
