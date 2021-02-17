@@ -90,7 +90,6 @@ public abstract class _BaseRootDAO<T, K extends Serializable> {
         
         HibernateUtil.addBitwiseOperationsToDialect();
         HibernateUtil.addAddDateToDialect();
-        HibernateUtil.addReplaceToDialect();
         DatabaseUpdate.update();
 	}
 
