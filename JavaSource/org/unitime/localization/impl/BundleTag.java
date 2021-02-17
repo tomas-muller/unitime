@@ -23,6 +23,7 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
 import org.unitime.localization.messages.Messages;
+import org.unitime.localization.impl.Localization;
 
 /**
  * @author Tomas Muller
