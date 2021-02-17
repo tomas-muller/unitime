@@ -168,23 +168,21 @@ public class ListEnrollments implements OnlineSectioningAction<List<ClassAssignm
 					st.setCanUseAssistant(iCanUseAssistant && (status == null || assStates.contains(status)));
 					st.setName(student.getName());
 					for (XAreaClassificationMajor acm: student.getMajors()) {
-						st.addArea(acm.getArea(), acm.getAreaLabel());
-						st.addClassification(acm.getClassification(), acm.getClassificationLabel());
-						st.addMajor(acm.getMajor(), acm.getMajorLabel());
-						st.addConcentration(acm.getConcentration(), acm.getConcentrationLabel());
+						st.addArea(acm.getArea());
+						st.addClassification(acm.getClassification());
+						st.addMajor(acm.getMajor());
+						st.addConcentration(acm.getConcentration());
 					}
 					for (XAreaClassificationMajor acm: student.getMinors()) {
-						st.addMinor(acm.getMajor(), acm.getMajorLabel());
+						st.addMinor(acm.getMajor());
 					}
-					for (XStudent.XGroup gr: student.getGroups()) {
+					for (String ac: student.getAccomodations())
+						st.addAccommodation(ac);
+					for (XStudent.XGroup gr: student.getGroups())
 						st.addGroup(gr.getType(), gr.getAbbreviation(), gr.getTitle());
-					}
-					for (XStudent.XGroup acc: student.getAccomodations()) {
-						st.addAccommodation(acc.getAbbreviation(), acc.getTitle());
-					}
-					for (XStudent.XAdvisor a: student.getAdvisors()) {
-						if (a.getName() != null) st.addAdvisor(a.getName());
-					}
+	    			for (XStudent.XAdvisor a: student.getAdvisors()) {
+	    				if (a.getName() != null) st.addAdvisor(a.getName());
+	    			}
 					e.setStudent(st);
 					
 					// fill course request information in

@@ -69,7 +69,7 @@ public class XStudent extends XStudentId implements Externalizable {
     private List<XAreaClassificationMajor> iMajors = new ArrayList<XAreaClassificationMajor>();
     private List<XAreaClassificationMajor> iMinors = new ArrayList<XAreaClassificationMajor>();
     private List<XGroup> iGroups = new ArrayList<XGroup>();
-    private List<XGroup> iAccomodations = new ArrayList<XGroup>();
+    private List<String> iAccomodations = new ArrayList<String>();
     private List<XRequest> iRequests = new ArrayList<XRequest>();
     private String iStatus = null;
     private String iEmail = null;
@@ -105,11 +105,12 @@ public class XStudent extends XStudentId implements Externalizable {
     	iEmailTimeStamp = student.getScheduleEmailedDate() == null ? null : student.getScheduleEmailedDate();
     	iLastStudentChange = student.getLastChangedByStudent();
     	for (StudentAreaClassificationMajor acm: student.getAreaClasfMajors()) {
-        	iMajors.add(new XAreaClassificationMajor(acm));
+        	iMajors.add(new XAreaClassificationMajor(acm.getAcademicArea().getAcademicAreaAbbreviation(), acm.getAcademicClassification().getCode(), acm.getMajor().getCode(),
+        			acm.getConcentration() == null ? null : acm.getConcentration().getCode()));
         }
     	if (iMajors.size() > 1) Collections.sort(iMajors);
     	for (StudentAreaClassificationMinor acm: student.getAreaClasfMinors()) {
-        	iMinors.add(new XAreaClassificationMajor(acm));
+        	iMinors.add(new XAreaClassificationMajor(acm.getAcademicArea().getAcademicAreaAbbreviation(), acm.getAcademicClassification().getCode(), acm.getMinor().getCode()));
         }
     	if (iMinors.size() > 1) Collections.sort(iMinors);
         for (StudentGroup group: student.getGroups()) {
@@ -119,7 +120,7 @@ public class XStudent extends XStudentId implements Externalizable {
         		iAllowDisabled = true;
         }
         for (StudentAccomodation accomodation: student.getAccomodations())
-        	iAccomodations.add(new XGroup(accomodation));
+        	iAccomodations.add(accomodation.getAbbreviation());
         for (Advisor advisor: student.getAdvisors())
         	iAdvisors.add(new XAdvisor(advisor.getExternalUniqueId(), advisor.getLastName() == null ? null : helper.getInstructorNameFormat().format(advisor), advisor.getEmail()));
         
@@ -292,17 +293,17 @@ public class XStudent extends XStudentId implements Externalizable {
     	if (student.hasMaxCredit())
     		iMaxCredit = student.getMaxCredit();
     	for (AreaClassificationMajor acm: student.getAreaClassificationMajors()) {
-    		iMajors.add(new XAreaClassificationMajor(acm));
+    		iMajors.add(new XAreaClassificationMajor(acm.getArea(), acm.getClassification(), acm.getMajor(), acm.getConcentration()));
     	}
     	if (iMajors.size() > 1) Collections.sort(iMajors);
     	for (AreaClassificationMajor acm: student.getAreaClassificationMinors()) {
-    		iMinors.add(new XAreaClassificationMajor(acm));
+    		iMinors.add(new XAreaClassificationMajor(acm.getArea(), acm.getClassification(), acm.getMajor(), acm.getConcentration()));
     	}
     	if (iMinors.size() > 1) Collections.sort(iMinors);
     	for (org.cpsolver.studentsct.model.StudentGroup gr: student.getGroups())
     		iGroups.add(new XGroup(gr));
     	for (String acc: student.getAccommodations())
-    		iAccomodations.add(new XGroup(acc, null));
+    		iAccomodations.add(acc);
     	for (Instructor advisor: student.getAdvisors())
     		iAdvisors.add(new XAdvisor(advisor.getExternalId(), advisor.getName(), advisor.getEmail()));
     	for (Request request: student.getRequests()) {
@@ -379,7 +380,7 @@ public class XStudent extends XStudentId implements Externalizable {
     /**
      * List of group codes for the given student
      */
-    public List<XGroup> getAccomodations() {
+    public List<String> getAccomodations() {
         return iAccomodations;
     }
     
@@ -486,7 +487,7 @@ public class XStudent extends XStudentId implements Externalizable {
 		int nrAccomodations = in.readInt();
 		iAccomodations.clear();
 		for (int i = 0; i < nrAccomodations; i++)
-			iAccomodations.add(new XGroup(in));
+			iAccomodations.add((String)in.readObject());
 		
 		int nrRequests = in.readInt();
 		iRequests.clear();
@@ -536,8 +537,8 @@ public class XStudent extends XStudentId implements Externalizable {
 			group.writeExternal(out);
 		
 		out.writeInt(iAccomodations.size());
-		for (XGroup accomodation: iAccomodations)
-			accomodation.writeExternal(out);
+		for (String accomodation: iAccomodations)
+			out.writeObject(accomodation);
 		
 		out.writeInt(iRequests.size());
 		for (XRequest request: iRequests)
@@ -605,20 +606,10 @@ public class XStudent extends XStudentId implements Externalizable {
 			iTitle = (g.getGroupName() == null ? null : g.getGroupName());
 		}
 		
-		public XGroup(StudentAccomodation a) {
-			iAbbreaviation = a.getAbbreviation();
-			iTitle = a.getName();
-		}
-		
 		public XGroup(org.cpsolver.studentsct.model.StudentGroup g) {
 			iType = (g.getType() == null || g.getType().isEmpty() ? null : g.getType());
 			iAbbreaviation = g.getReference();
 			iTitle = (g.getName() == null ? null : g.getName());
-		}
-		
-		public XGroup(String abbv, String title) {
-			iAbbreaviation = abbv;
-			iTitle = title;
 		}
 		
 		public XGroup(ObjectInput in) throws IOException, ClassNotFoundException {
