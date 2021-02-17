@@ -779,9 +779,6 @@ public interface StudentSectioningMessages extends Messages {
 
 	@DefaultMessage("Major")
 	String colMajor();
-	
-	@DefaultMessage("Minor")
-	String colMinor();
 
 	@DefaultMessage("Requested")
 	String colRequestTimeStamp();

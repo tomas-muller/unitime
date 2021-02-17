@@ -138,9 +138,6 @@ public class FindOnlineSectioningLogAction implements OnlineSectioningAction<Lis
 						st.addClassification(acm.getClassification());
 						st.addMajor(acm.getMajor());
 					}
-					for (XAreaClassificationMajor acm: student.getMinors()) {
-						st.addMinor(acm.getMajor());
-					}
 					for (String acc: student.getAccomodations()) {
 						st.addAccommodation(acc);
 					}

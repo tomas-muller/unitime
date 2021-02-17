@@ -172,9 +172,6 @@ public class ListEnrollments implements OnlineSectioningAction<List<ClassAssignm
 						st.addClassification(acm.getClassification());
 						st.addMajor(acm.getMajor());
 					}
-					for (XAreaClassificationMajor acm: student.getMinors()) {
-						st.addMinor(acm.getMajor());
-					}
 					for (String ac: student.getAccomodations())
 						st.addAccommodation(ac);
 					for (XStudent.XGroup gr: student.getGroups())

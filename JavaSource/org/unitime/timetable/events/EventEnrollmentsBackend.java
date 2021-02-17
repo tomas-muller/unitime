@@ -53,7 +53,6 @@ import org.unitime.timetable.model.ExamOwner;
 import org.unitime.timetable.model.Meeting;
 import org.unitime.timetable.model.StudentAccomodation;
 import org.unitime.timetable.model.StudentAreaClassificationMajor;
-import org.unitime.timetable.model.StudentAreaClassificationMinor;
 import org.unitime.timetable.model.StudentClassEnrollment;
 import org.unitime.timetable.model.StudentGroup;
 import org.unitime.timetable.model.TimetableManager;
@@ -520,9 +519,6 @@ public class EventEnrollmentsBackend extends EventAction<EventEnrollmentsRpcRequ
     				st.addArea(acm.getAcademicArea().getAcademicAreaAbbreviation());
     				st.addClassification(acm.getAcademicClassification().getCode());
     				st.addMajor(acm.getMajor().getCode());
-    			}
-    			for (StudentAreaClassificationMinor acm: new TreeSet<StudentAreaClassificationMinor>(enrollment.getStudent().getAreaClasfMinors())) {
-    				st.addMinor(acm.getMinor().getCode());
     			}
     			for (StudentGroup g: enrollment.getStudent().getGroups()) {
     				if (g.getType() == null)

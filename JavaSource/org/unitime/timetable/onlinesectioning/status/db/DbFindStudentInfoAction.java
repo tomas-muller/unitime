@@ -48,7 +48,6 @@ import org.unitime.timetable.model.InstructionalMethod;
 import org.unitime.timetable.model.Student;
 import org.unitime.timetable.model.StudentAccomodation;
 import org.unitime.timetable.model.StudentAreaClassificationMajor;
-import org.unitime.timetable.model.StudentAreaClassificationMinor;
 import org.unitime.timetable.model.StudentClassEnrollment;
 import org.unitime.timetable.model.StudentClassPref;
 import org.unitime.timetable.model.StudentGroup;
@@ -158,9 +157,6 @@ public class DbFindStudentInfoAction extends FindStudentInfoAction {
 						st.addArea(acm.getAcademicArea().getAcademicAreaAbbreviation());
 						st.addClassification(acm.getAcademicClassification().getCode());
 						st.addMajor(acm.getMajor().getCode());
-					}
-					for (StudentAreaClassificationMinor acm: new TreeSet<StudentAreaClassificationMinor>(student.getAreaClasfMinors())) {
-						st.addMinor(acm.getMinor().getCode());
 					}
 					for (StudentAccomodation acc: student.getAccomodations()) {
 						st.addAccommodation(acc.getAbbreviation());
@@ -545,9 +541,6 @@ public class DbFindStudentInfoAction extends FindStudentInfoAction {
 					st.addArea(acm.getAcademicArea().getAcademicAreaAbbreviation());
 					st.addClassification(acm.getAcademicClassification().getCode());
 					st.addMajor(acm.getMajor().getCode());
-				}
-				for (StudentAreaClassificationMinor acm: new TreeSet<StudentAreaClassificationMinor>(student.getAreaClasfMinors())) {
-					st.addMinor(acm.getMinor().getCode());
 				}
 				for (StudentAccomodation acc: student.getAccomodations()) {
 					st.addAccommodation(acc.getAbbreviation());

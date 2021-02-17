@@ -691,8 +691,6 @@ public class StatusPageSuggestionsAction implements OnlineSectioningAction<List<
 			if ("area".equals(attr)) {
 				for (XAreaClassificationMajor acm: student().getMajors())
 					if (eq(acm.getArea(), term)) return true;
-				for (XAreaClassificationMajor acm: student().getMinors())
-					if (eq(acm.getArea(), term)) return true;
 			}
 			
 			if ("clasf".equals(attr) || "classification".equals(attr)) {
@@ -702,10 +700,6 @@ public class StatusPageSuggestionsAction implements OnlineSectioningAction<List<
 			
 			if ("major".equals(attr)) {
 				for (XAreaClassificationMajor acm: student().getMajors())
-					if (eq(acm.getMajor(), term)) return true;
-			}
-			if ("minor".equals(attr)) {
-				for (XAreaClassificationMajor acm: student().getMinors())
 					if (eq(acm.getMajor(), term)) return true;
 			}
 			
@@ -1371,16 +1365,11 @@ public class StatusPageSuggestionsAction implements OnlineSectioningAction<List<
 			if ("area".equals(attr)) {
 				for (XAreaClassificationMajor acm: student().getMajors())
 					if (eq(acm.getArea(), term)) return true;
-				for (XAreaClassificationMajor acm: student().getMinors())
-					if (eq(acm.getArea(), term)) return true;
 			} else if ("clasf".equals(attr) || "classification".equals(attr)) {
 				for (XAreaClassificationMajor acm: student().getMajors())
 					if (eq(acm.getClassification(), term)) return true;
 			} else if ("major".equals(attr)) {
 				for (XAreaClassificationMajor acm: student().getMajors())
-					if (eq(acm.getMajor(), term)) return true;
-			} else if ("minor".equals(attr)) {
-				for (XAreaClassificationMajor acm: student().getMinors())
 					if (eq(acm.getMajor(), term)) return true;
 			} else if ("group".equals(attr)) {
 				for (XStudent.XGroup group: student().getGroups())

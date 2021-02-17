@@ -69,7 +69,6 @@ import org.unitime.timetable.model.SchedulingSubpart;
 import org.unitime.timetable.model.Student;
 import org.unitime.timetable.model.StudentAccomodation;
 import org.unitime.timetable.model.StudentAreaClassificationMajor;
-import org.unitime.timetable.model.StudentAreaClassificationMinor;
 import org.unitime.timetable.model.StudentClassEnrollment;
 import org.unitime.timetable.model.StudentClassPref;
 import org.unitime.timetable.model.StudentGroup;
@@ -799,10 +798,6 @@ public class DbFindEnrollmentInfoAction extends FindEnrollmentInfoAction {
 				for (StudentAreaClassificationMajor acm: student().getAreaClasfMajors())
 					if (eq(acm.getMajor().getCode(), term)) return true;
 			}
-			if ("minor".equals(attr)) {
-				for (StudentAreaClassificationMinor acm: student().getAreaClasfMinors())
-					if (eq(acm.getMinor().getCode(), term)) return true;
-			}
 			
 			if ("group".equals(attr)) {
 				for (StudentGroup group: student().getGroups())
@@ -1366,9 +1361,6 @@ public class DbFindEnrollmentInfoAction extends FindEnrollmentInfoAction {
 			} else if ("major".equals(attr)) {
 				for (StudentAreaClassificationMajor acm: student().getAreaClasfMajors())
 					if (eq(acm.getMajor().getCode(), term)) return true;
-			} else if ("minor".equals(attr)) {
-				for (StudentAreaClassificationMinor acm: student().getAreaClasfMinors())
-					if (eq(acm.getMinor().getCode(), term)) return true;
 			} else if ("group".equals(attr)) {
 				for (StudentGroup group: student().getGroups())
 					if (eq(group.getGroupAbbreviation(), term)) return true;
