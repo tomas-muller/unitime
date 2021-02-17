@@ -90,7 +90,6 @@ import org.unitime.timetable.gwt.shared.SolverInterface.SolverType;
 
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.dom.client.Style.Overflow;
@@ -2915,7 +2914,7 @@ public class SectioningStatusPage extends Composite {
 									rt.getTable().setColumnVisible(ReservationColumn.PROJECTED_BY_RULE.ordinal(), false);
 									rt.getTable().setColumnVisible(ReservationColumn.EXPIRATION_DATE.ordinal(), iOnline);
 									rt.getTable().setColumnVisible(ReservationColumn.START_DATE.ordinal(), iOnline);
-									GwtHint.showHint(getRowElement(), rt);
+									GwtHint.showHint(getElement(), rt);
 								}
 							}
 						});
@@ -2929,14 +2928,6 @@ public class SectioningStatusPage extends Composite {
 					}
 				});
 			}
-		}
-		
-		public Element getRowElement() {
-			Element e = getElement();
-			while (!"tr".equalsIgnoreCase(e.getNodeName()) && e.getParentElement() != null) {
-				e = e.getParentElement();
-			}
-			return e;
 		}
 		
 		@Override
