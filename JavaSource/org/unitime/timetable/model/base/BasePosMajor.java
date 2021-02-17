@@ -25,7 +25,6 @@ import java.util.Set;
 
 import org.unitime.timetable.model.AcademicArea;
 import org.unitime.timetable.model.PosMajor;
-import org.unitime.timetable.model.PosMajorConcentration;
 import org.unitime.timetable.model.Session;
 
 /**
@@ -42,7 +41,6 @@ public abstract class BasePosMajor implements Serializable {
 
 	private Session iSession;
 	private Set<AcademicArea> iAcademicAreas;
-	private Set<PosMajorConcentration> iConcentrations;
 
 	public static String PROP_UNIQUEID = "uniqueId";
 	public static String PROP_EXTERNAL_UID = "externalUniqueId";
@@ -80,13 +78,6 @@ public abstract class BasePosMajor implements Serializable {
 	public void addToacademicAreas(AcademicArea academicArea) {
 		if (iAcademicAreas == null) iAcademicAreas = new HashSet<AcademicArea>();
 		iAcademicAreas.add(academicArea);
-	}
-
-	public Set<PosMajorConcentration> getConcentrations() { return iConcentrations; }
-	public void setConcentrations(Set<PosMajorConcentration> concentrations) { iConcentrations = concentrations; }
-	public void addToconcentrations(PosMajorConcentration posMajorConcentration) {
-		if (iConcentrations == null) iConcentrations = new HashSet<PosMajorConcentration>();
-		iConcentrations.add(posMajorConcentration);
 	}
 
 	public boolean equals(Object o) {

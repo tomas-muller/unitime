@@ -24,7 +24,6 @@ import java.io.Serializable;
 import org.unitime.timetable.model.AcademicArea;
 import org.unitime.timetable.model.AcademicClassification;
 import org.unitime.timetable.model.PosMajor;
-import org.unitime.timetable.model.PosMajorConcentration;
 import org.unitime.timetable.model.Student;
 import org.unitime.timetable.model.StudentAreaClassificationMajor;
 
@@ -41,7 +40,6 @@ public abstract class BaseStudentAreaClassificationMajor implements Serializable
 	private AcademicArea iAcademicArea;
 	private AcademicClassification iAcademicClassification;
 	private PosMajor iMajor;
-	private PosMajorConcentration iConcentration;
 
 	public static String PROP_UNIQUEID = "uniqueId";
 
@@ -71,9 +69,6 @@ public abstract class BaseStudentAreaClassificationMajor implements Serializable
 	public PosMajor getMajor() { return iMajor; }
 	public void setMajor(PosMajor major) { iMajor = major; }
 
-	public PosMajorConcentration getConcentration() { return iConcentration; }
-	public void setConcentration(PosMajorConcentration concentration) { iConcentration = concentration; }
-
 	public boolean equals(Object o) {
 		if (o == null || !(o instanceof StudentAreaClassificationMajor)) return false;
 		if (getUniqueId() == null || ((StudentAreaClassificationMajor)o).getUniqueId() == null) return false;
@@ -93,7 +88,6 @@ public abstract class BaseStudentAreaClassificationMajor implements Serializable
 		return "StudentAreaClassificationMajor[" +
 			"\n	AcademicArea: " + getAcademicArea() +
 			"\n	AcademicClassification: " + getAcademicClassification() +
-			"\n	Concentration: " + getConcentration() +
 			"\n	Major: " + getMajor() +
 			"\n	Student: " + getStudent() +
 			"\n	UniqueId: " + getUniqueId() +

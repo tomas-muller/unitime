@@ -186,11 +186,6 @@ public class GenerateSectioningReport implements OnlineSectioningAction<CSVFile>
         			case Curriculum:
         				XCurriculumReservation curriculumR = (XCurriculumReservation) reservation;
         				clonedReservation = new CurriculumReservation(reservation.getReservationId(), reservation.getLimit(), clonedOffering, curriculumR.getAcademicAreas(), curriculumR.getClassifications(), curriculumR.getMajors(), curriculumR.getMinors());
-        				for (String major: curriculumR.getMajors()) {
-        					Set<String> concs = curriculumR.getConcentrations(major);
-        					if (concs != null)
-        						for (String conc: concs) ((CurriculumReservation)clonedReservation).addConcentration(major, conc);
-        				}
         				break;
         			case Group:
         				if (reservation instanceof XIndividualReservation) {
@@ -255,11 +250,6 @@ public class GenerateSectioningReport implements OnlineSectioningAction<CSVFile>
         				((CurriculumReservation)clonedReservation).setMustBeUsed(curR.mustBeUsed());
         				((CurriculumReservation)clonedReservation).setAllowOverlap(curR.isAllowOverlap());
         				((CurriculumReservation)clonedReservation).setCanAssignOverLimit(curR.canAssignOverLimit());
-        				for (String major: curR.getMajors()) {
-        					Set<String> concs = curR.getConcentrations(major);
-        					if (concs != null)
-        						for (String conc: concs) ((CurriculumReservation)clonedReservation).addConcentration(major, conc);
-        				}
         				break;
         			default:
         				clonedReservation = new DummyReservation(clonedOffering);
@@ -297,7 +287,7 @@ public class GenerateSectioningReport implements OnlineSectioningAction<CSVFile>
 							gr.getStudentIds().add(student.getStudentId());
 				}
 				for (XAreaClassificationMajor acm: student.getMajors())
-					clonnedStudent.getAreaClassificationMajors().add(new AreaClassificationMajor(acm.getArea(), acm.getClassification(), acm.getMajor(), acm.getConcentration()));
+					clonnedStudent.getAreaClassificationMajors().add(new AreaClassificationMajor(acm.getArea(), acm.getClassification(), acm.getMajor()));
 				for (String acc: student.getAccomodations())
 					clonnedStudent.getAccommodations().add(acc);
 				for (XRequest r: student.getRequests()) {

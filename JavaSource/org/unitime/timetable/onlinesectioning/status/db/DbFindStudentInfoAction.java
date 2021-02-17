@@ -158,7 +158,6 @@ public class DbFindStudentInfoAction extends FindStudentInfoAction {
 						st.addArea(acm.getAcademicArea().getAcademicAreaAbbreviation());
 						st.addClassification(acm.getAcademicClassification().getCode());
 						st.addMajor(acm.getMajor().getCode());
-						st.addConcentration(acm.getConcentration() == null ? null : acm.getConcentration().getCode());
 					}
 					for (StudentAreaClassificationMinor acm: new TreeSet<StudentAreaClassificationMinor>(student.getAreaClasfMinors())) {
 						st.addMinor(acm.getMinor().getCode());
@@ -546,7 +545,6 @@ public class DbFindStudentInfoAction extends FindStudentInfoAction {
 					st.addArea(acm.getAcademicArea().getAcademicAreaAbbreviation());
 					st.addClassification(acm.getAcademicClassification().getCode());
 					st.addMajor(acm.getMajor().getCode());
-					st.addConcentration(acm.getConcentration() == null ? null : acm.getConcentration().getCode());
 				}
 				for (StudentAreaClassificationMinor acm: new TreeSet<StudentAreaClassificationMinor>(student.getAreaClasfMinors())) {
 					st.addMinor(acm.getMinor().getCode());

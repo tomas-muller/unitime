@@ -253,7 +253,7 @@ public class StudentSchedulingDashboardExportCSV implements Exporter {
 		boolean hasEnrollment = false, hasWaitList = false,  hasArea = false, hasMajor = false, hasGroup = false, hasAcmd = false, hasReservation = false,
 				hasRequestedDate = false, hasEnrolledDate = false, hasConsent = false, hasReqCredit = false, hasCredit = false, hasDistances = false, hasOverlaps = false,
 				hasFreeTimeOverlaps = false, hasPrefIMConfs = false, hasPrefSecConfs = false, hasNote = false, hasEmailed = false, hasOverride = false, hasAdvisor = false,
-				hasAdvisedInfo = false, hasMinor = false, hasConc = false;
+				hasAdvisedInfo = false, hasMinor = false;
 		Set<String> groupTypes = new TreeSet<String>();
 		if (students != null)
 			for (ClassAssignmentInterface.StudentInfo e: students) {
@@ -283,7 +283,6 @@ public class StudentSchedulingDashboardExportCSV implements Exporter {
 				if (e.getStudent().hasAdvisor()) hasAdvisor = true;
 				if (e.getAdvisedInfo() != null) hasAdvisedInfo = true;
 				if (e.getStudent().hasMinor()) hasMinor = true;
-				if (e.getStudent().hasConcentration()) hasConc = true;
 			}
 		
 		List<String> header = new ArrayList<String>();
@@ -298,9 +297,6 @@ public class StudentSchedulingDashboardExportCSV implements Exporter {
 		
 		if (hasMajor)
 			header.add(MESSAGES.colMajor());
-		
-		if (hasConc)
-			header.add(MESSAGES.colConcentration());
 		
 		if (hasMinor)
 			header.add(MESSAGES.colMinor());
@@ -391,8 +387,6 @@ public class StudentSchedulingDashboardExportCSV implements Exporter {
 					}
 					if (hasMajor)
 						line.add(info.getStudent().getMajor("\n"));
-					if (hasConc)
-						line.add(info.getStudent().getConcentration("\n"));
 					if (hasMinor)
 						line.add(info.getStudent().getMinor("\n"));
 					if (hasGroup)

@@ -105,8 +105,7 @@ public class XStudent extends XStudentId implements Externalizable {
     	iEmailTimeStamp = student.getScheduleEmailedDate() == null ? null : student.getScheduleEmailedDate();
     	iLastStudentChange = student.getLastChangedByStudent();
     	for (StudentAreaClassificationMajor acm: student.getAreaClasfMajors()) {
-        	iMajors.add(new XAreaClassificationMajor(acm.getAcademicArea().getAcademicAreaAbbreviation(), acm.getAcademicClassification().getCode(), acm.getMajor().getCode(),
-        			acm.getConcentration() == null ? null : acm.getConcentration().getCode()));
+        	iMajors.add(new XAreaClassificationMajor(acm.getAcademicArea().getAcademicAreaAbbreviation(), acm.getAcademicClassification().getCode(), acm.getMajor().getCode()));
         }
     	if (iMajors.size() > 1) Collections.sort(iMajors);
     	for (StudentAreaClassificationMinor acm: student.getAreaClasfMinors()) {
@@ -293,11 +292,11 @@ public class XStudent extends XStudentId implements Externalizable {
     	if (student.hasMaxCredit())
     		iMaxCredit = student.getMaxCredit();
     	for (AreaClassificationMajor acm: student.getAreaClassificationMajors()) {
-    		iMajors.add(new XAreaClassificationMajor(acm.getArea(), acm.getClassification(), acm.getMajor(), acm.getConcentration()));
+    		iMajors.add(new XAreaClassificationMajor(acm.getArea(), acm.getClassification(), acm.getMajor()));
     	}
     	if (iMajors.size() > 1) Collections.sort(iMajors);
     	for (AreaClassificationMajor acm: student.getAreaClassificationMinors()) {
-    		iMinors.add(new XAreaClassificationMajor(acm.getArea(), acm.getClassification(), acm.getMajor(), acm.getConcentration()));
+    		iMinors.add(new XAreaClassificationMajor(acm.getArea(), acm.getClassification(), acm.getMajor()));
     	}
     	if (iMinors.size() > 1) Collections.sort(iMinors);
     	for (org.cpsolver.studentsct.model.StudentGroup gr: student.getGroups())
