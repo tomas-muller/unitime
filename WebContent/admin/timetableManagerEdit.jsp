@@ -35,10 +35,8 @@
 		<%= JavascriptFunctions.getJsConfirm(sessionContext) %>
 		
 		function confirmDelete() {
-			if (jsConfirm!=null && !jsConfirm) {
-				doDel('manager', '');
+			if (jsConfirm!=null && !jsConfirm)
 				return true;
-			}
 
 			if(confirm('The manager and all associated settings will be deleted. Continue?')) {
 				doDel('manager', '');
