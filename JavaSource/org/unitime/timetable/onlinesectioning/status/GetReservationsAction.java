@@ -51,7 +51,6 @@ import org.unitime.timetable.model.StudentGroupReservation;
 import org.unitime.timetable.model.comparators.ClassComparator;
 import org.unitime.timetable.model.comparators.InstrOfferingConfigComparator;
 import org.unitime.timetable.model.dao.CurriculumReservationDAO;
-import org.unitime.timetable.model.dao.LearningCommunityReservationDAO;
 import org.unitime.timetable.model.dao.StudentGroupReservationDAO;
 import org.unitime.timetable.onlinesectioning.OnlineSectioningAction;
 import org.unitime.timetable.onlinesectioning.OnlineSectioningHelper;
@@ -562,11 +561,6 @@ public class GetReservationsAction implements OnlineSectioningAction<List<Reserv
 			group.setAbbv(sg.getAbbreviation());
 			group.setLimit(((XLearningCommunityReservation) reservation).getStudentIds().size());
 			((ReservationInterface.LCReservation) r).setGroup(group);
-			LearningCommunityReservation lcr = LearningCommunityReservationDAO.getInstance().get(reservation.getReservationId());
-			if (lcr != null) {
-				group.setId(lcr.getGroup().getUniqueId());
-				group.setLimit(lcr.getGroup().getStudents().size());
-			}
 			
 			co = offering.getCourse(((XLearningCommunityReservation) reservation).getCourseId());
 			ReservationInterface.Course course = new ReservationInterface.Course();
@@ -616,8 +610,8 @@ public class GetReservationsAction implements OnlineSectioningAction<List<Reserv
 							hasSection = true;
 							ReservationInterface.Clazz clazz = new ReservationInterface.Clazz();
 							clazz.setId(c.getSectionId());
-							clazz.setAbbv(c.getName(co.getCourseId()));
-							clazz.setName(subpart.getName() + " " + c.getName(co.getCourseId()));
+							clazz.setAbbv(subpart.getName() + " " + c.getName(co.getCourseId()));
+							clazz.setName(c.getName(co.getCourseId()));
 							clazz.setLimit(c.getLimit() < 0 ? null : c.getLimit());
 							r.getClasses().add(clazz);
 						}
@@ -630,19 +624,6 @@ public class GetReservationsAction implements OnlineSectioningAction<List<Reserv
 					config.setAbbv(ioc.getName());
 					config.setLimit(ioc.getLimit() < 0 ? null : ioc.getLimit());
 					r.getConfigs().add(config);
-				}
-			} else {
-				for (XSubpart subpart: ioc.getSubparts()) {
-					for (XSection c: subpart.getSections()) {
-						if (reservation.hasSectionRestriction(c.getSectionId())) {
-							ReservationInterface.Clazz clazz = new ReservationInterface.Clazz();
-							clazz.setId(c.getSectionId());
-							clazz.setAbbv(c.getName(co.getCourseId()));
-							clazz.setName(subpart.getName() + " " + c.getName(co.getCourseId()));
-							clazz.setLimit(c.getLimit() < 0 ? null : c.getLimit());
-							r.getClasses().add(clazz);
-						}
-					}
 				}
 			}
 		}
