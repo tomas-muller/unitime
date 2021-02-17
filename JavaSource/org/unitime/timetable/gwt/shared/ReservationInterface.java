@@ -19,7 +19,6 @@
 */
 package org.unitime.timetable.gwt.shared;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,8 +34,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 /**
  * @author Tomas Muller
  */
-public abstract class ReservationInterface implements IsSerializable, Comparable<ReservationInterface>, Serializable {
-	private static final long serialVersionUID = 1L;
+public abstract class ReservationInterface implements IsSerializable, Comparable<ReservationInterface> {
 	private Long iId;
 	private Offering iOffering;
 	private List<Config> iConfigs = new ArrayList<Config>();
@@ -53,7 +51,6 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 	public void setOffering(Offering offering) { iOffering = offering; }
 	public Integer getLimit() { return iLimit; }
 	public void setLimit(Integer limit) { iLimit = limit; }
-	public Integer getReservationLimit() { return iLimit; }
 	public Integer getLastLike() { return iLastLike; }
 	public void setLastLike(Integer lastLike) { iLastLike = lastLike; }
 	public Integer getEnrollment() { return iEnrollment; }
@@ -108,7 +105,6 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 	}
 	
 	public static class CourseReservation extends ReservationInterface {
-		private static final long serialVersionUID = 1L;
 		private Course iCourse;
 		
 		public CourseReservation() {
@@ -127,7 +123,6 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 	}
 	
 	public static class GroupReservation extends ReservationInterface {
-		private static final long serialVersionUID = 1L;
 		private IdName iGroup;
 		
 		public GroupReservation() {
@@ -144,7 +139,6 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 	}
 
 	public static class IndividualReservation extends ReservationInterface {
-		private static final long serialVersionUID = 1L;
 		private List<IdName> iStudents = new ArrayList<IdName>();
 		
 		public IndividualReservation() {
@@ -169,7 +163,6 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 	}
 	
 	public static class OverrideReservation extends IndividualReservation {
-		private static final long serialVersionUID = 1L;
 		private List<IdName> iStudents = new ArrayList<IdName>();
 		private OverrideType iType = null;
 		
@@ -210,7 +203,6 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 	}
 
 	public static class CurriculumReservation extends ReservationInterface {
-		private static final long serialVersionUID = 1L;
 		private Areas iCurriculum;
 		
 		public CurriculumReservation() {
@@ -227,7 +219,6 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 	}
 	
 	public static class LCReservation extends ReservationInterface {
-		private static final long serialVersionUID = 1L;
 		private IdName iGroup;
 		private Course iCourse;
 		
@@ -247,8 +238,7 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 		public int getPriority() { return 500; }
 	}
 
-	public static class IdName implements IsSerializable, Comparable<IdName>, Serializable {
-		private static final long serialVersionUID = 1L;
+	public static class IdName implements IsSerializable, Comparable<IdName> {
 		private Long iId;
 		private String iAbbv;
 		private String iName;
@@ -287,7 +277,6 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 	}
 	
 	public static class Course extends IdName {
-		private static final long serialVersionUID = 1L;
 		private boolean iControl = true;
 		
 		public Course() { super(); }
@@ -297,7 +286,6 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 	}
 	
 	public static class Config extends IdName {
-		private static final long serialVersionUID = 1L;
 		private List<Subpart> iSubparts = new ArrayList<Subpart>();
 		private String iInstructionalMethod = null;
 
@@ -365,7 +353,6 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 	}
 
 	public static class Subpart extends IdName {
-		private static final long serialVersionUID = 1L;
 		private Long iParentId = null;
 		private List<Clazz> iClasses = new ArrayList<Clazz>();
 		private Config iConfig;
@@ -387,7 +374,6 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 	}
 
 	public static class Clazz extends IdName {
-		private static final long serialVersionUID = 1L;
 		private Subpart iSubpart = null;
 		private Long iParentId = null;
 		private String iExternalId = null;
@@ -434,7 +420,6 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 	}
 
 	public static class Offering extends IdName {
-		private static final long serialVersionUID = 1L;
 		private boolean iOffered = true;
 		private boolean iNeedUnlock = false;
 		private List<Course> iCourses = new ArrayList<Course>();
@@ -460,7 +445,6 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 	}
 	
 	public static class Area extends IdName {
-		private static final long serialVersionUID = 1L;
 		private List<IdName> iClassifications = new ArrayList<IdName>();
 		private List<IdName> iMajors = new ArrayList<IdName>();
 		private List<IdName> iMinors = new ArrayList<IdName>();
@@ -494,8 +478,7 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 		public String toString() { return super.toString() + " " + getClassifications().toString() + " " + getMajors().toString(); }
 	}
 	
-	public static class Areas implements IsSerializable, Serializable {
-		private static final long serialVersionUID = 1L;
+	public static class Areas implements IsSerializable {
 		private List<IdName> iAreas = new ArrayList<IdName>();
 		private List<IdName> iClassifications = new ArrayList<IdName>();
 		private List<IdName> iMajors = new ArrayList<IdName>();
@@ -514,7 +497,6 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 	}
 	
 	public static class Curriculum extends IdName {
-		private static final long serialVersionUID = 1L;
 		private List<IdName> iClassifications = new ArrayList<IdName>();
 		private List<IdName> iMajors = new ArrayList<IdName>();
 		private IdName iArea = null;
@@ -534,7 +516,7 @@ public abstract class ReservationInterface implements IsSerializable, Comparable
 		public String toString() { return super.toString() + " " + getArea().toString() + " " + getClassifications().toString() + " " + getMajors().toString(); }
 	}
 	
-	public static enum OverrideType implements IsSerializable, Serializable {
+	public static enum OverrideType implements IsSerializable {
 		AllowTimeConflict("time-cnflt", false, true, false, true, true),
 		AllowOverLimit("closed", false, false, true, true, true),
 		AllowOverLimitTimeConflict("time-limit-cnflt", false, true, true, true, true),
