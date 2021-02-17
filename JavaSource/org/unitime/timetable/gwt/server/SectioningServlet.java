@@ -427,7 +427,7 @@ public class SectioningServlet implements SectioningService, DisposableBean {
 		boolean noCourseType = true, allCourseTypes = false;
 		Set<String> allowedCourseTypes = new HashSet<String>();
 		Set<Long> courseIds = null;
-		if (getSessionContext().hasPermissionAnySession(cx.getSessionId(), Right.StudentSchedulingCanLookupAllCourses)) {
+		if (getSessionContext().hasPermissionAnySession(cx.getSessionId(), Right.StudentSchedulingAdvisor)) {
 			allCourseTypes = true;
 			if (cx.getStudentId() != null) {
 				if (server != null && !(server instanceof DatabaseServer)) {
