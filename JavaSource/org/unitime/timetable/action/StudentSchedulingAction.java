@@ -94,7 +94,6 @@ public class StudentSchedulingAction extends Action {
 		String target = null;
 		for (Map.Entry<String, String[]> entry: request.getParameterMap().entrySet()) {
 			for (String value: entry.getValue()) {
-				if ("prefer".equals(entry.getKey())) continue;
 				if (target == null) target = entry.getKey() + "=" + URLEncoder.encode(value, "UTF-8");
 				else target += "&" + entry.getKey() + "=" + URLEncoder.encode(value, "UTF-8");
 			}
@@ -172,10 +171,7 @@ public class StudentSchedulingAction extends Action {
 			List<? extends UserQualifier> q = sessionContext.getUser().getCurrentAuthority().getQualifiers("Student");
 			if (q != null && !q.isEmpty()) {
 				UserQualifier studentQualifier = q.get(0);
-				boolean preferCourseRequests = ApplicationProperty.StudentSchedulingPreferCourseRequests.isTrue();
-				if (request.getParameter("prefer") != null)
-					preferCourseRequests = "cr".equalsIgnoreCase(request.getParameter("prefer")) || "crf".equalsIgnoreCase(request.getParameter("prefer"));
-				if (preferCourseRequests) {
+				if (ApplicationProperty.StudentSchedulingPreferCourseRequests.isTrue()) {
 					// 1. Course Requests with the registration enabled
 					try {
 						for (AcademicSessionInfo session:  service.listAcademicSessions(false)) {
